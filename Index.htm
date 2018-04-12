@@ -9,11 +9,16 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link href="Content/themes/base/all.css" rel="stylesheet" />
     <link href="Content/Site.css" rel="stylesheet" />
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <!--<script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>-->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <script src="src/index.js"></script>
 </head>
 <body>
 
 <nav class="navbar navbar-inverse">
-    
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -38,11 +43,13 @@
 <div class="container-fluid">
     
     <div id="rowHeader" class="row">
-        <div class="col-md-8">
-            Header Row of items
+        <div class="col-md-8 border">
+           
+            <div id="root"></div>
+       
         </div>
         <div class="col-md-4">
-            Search Box and Button <input type="button" value="glyph"/>
+            Search Box and Button <input type="button" value="glyph" />
         </div>
     </div>
 
@@ -52,22 +59,33 @@
 
         <div class="col-md-4">
             <p>Quote List Item List</p>
+            <!-- categorized collapsable list here -->
+            <datalist><@value</datalist>
         </div>
 
         <div class="col-md-4">
-            <p>Center</p>
+            <p>Line Graphs Here</p>
             <div id="dvDemo"></div>
         </div>
 
-        <div class="col-md-4">
-            <p>Right</p>
+        <div class="col-md-4 border">
+            <p>Search Results</p>
         </div>
     </div>
 
 
 
 </div>
-<script>
+<script type="text/babel">
+
+      ReactDOM.render(
+        <h1>Hello, world!</h1>,
+        document.getElementById('root')
+      );
+
+</script>
+
+<script type="text/javascript">
     $(document).ready(function () {
 
         console.log("document loaded");
@@ -78,8 +96,11 @@
     $(window).on("load", function () {
         console.log("window loaded");
     });
-
-    
 </script>
+    
+    
+    
+    
+
 </body>
 </html>
