@@ -6,6 +6,8 @@
 //    document.getElementById('root')
 //);
 
+//Test
+
 WEBSOCKET = new WebSocket('wss://ProphetX14.dtn.com/cs/1.0');
 WEBSOCKET.onopen = onOpen;
 //WEBSOCKET.onclose = onClose;
