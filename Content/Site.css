@@ -7,7 +7,7 @@ body {
 }
 
 #dvDemo {
-    border: 1px solid blue;
+    /*border: 1px solid blue;*/
 }
 
 .border {
@@ -27,4 +27,4 @@ body {
     background-color: #2e875b;
 }
 
-
+.panel-body{ color: #000;}

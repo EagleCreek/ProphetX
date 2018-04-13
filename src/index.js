@@ -31,6 +31,7 @@ function onOpen(evt) {
 }
 
 function onMessage(evt) {
+   
     console.log('Received message: ' + evt.data);
     var msg = JSON.parse(evt.data);
     switch (msg.meta.command) {

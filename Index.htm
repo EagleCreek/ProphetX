@@ -9,12 +9,15 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link href="Content/themes/base/all.css" rel="stylesheet" />
     <link href="Content/Site.css" rel="stylesheet" />
+
     <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
     <!--<script src="https://unpkg.com/react@16/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>-->
     <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    
     <script src="src/index.js"></script>
+    <script src="src/DataAccess.js"></script>
 </head>
 <body>
 
@@ -43,13 +46,16 @@
 <div class="container-fluid">
     
     <div id="rowHeader" class="row">
-        <div class="col-md-8 border">
-           
-            <div id="root"></div>
-       
+        <div class="col-md-8">
+            <div id="header"></div>
         </div>
         <div class="col-md-4">
-            Search Box and Button <input type="button" value="glyph" />
+            <input type="text" class="form-control" 
+                   id="searchText" style="width: 140px; float: left;" 
+                   placeholder="Search Symbol" />  
+            <input type="button" 
+             class="btn btn-default" value="Search" onclick="showList();"/>
+          
         </div>
     </div>
 
@@ -58,18 +64,97 @@
     <div id="rowBody" class="row">
 
         <div class="col-md-4">
-            <p>Quote List Item List</p>
+            
             <!-- categorized collapsable list here -->
-            <datalist><@value</datalist>
+
+            <div id="listQuotes"></div>
+         
+            <section>
+                <h4>CORN</h4>
+                <div class="panel-group">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" href="#collapse1">@CZ17 [10] </a>
+                            </h4>
+                        </div>
+                        <div id="collapse1" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                Panel Body Four Columns 
+                            </div>
+                            <!--<div class="panel-footer"></div>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-group">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" href="#collapse3">@CH18 [10] </a>
+                            </h4>
+                        </div>
+                        <div id="collapse3" class="panel-collapse collapse">
+                            <div class="panel-body">Panel Body</div>
+                            <!--<div class="panel-footer"></div>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-group">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" href="#collapse4">@CK [18] </a>
+                            </h4>
+                        </div>
+                        <div id="collapse4" class="panel-collapse collapse">
+                            <div class="panel-body">Panel Body</div>
+                            <!--<div class="panel-footer"></div>-->
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section>
+                <h4>WHEAT</h4>
+                <div class="panel-group">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" href="#collapse2">@SX17 [10] </a>
+                            </h4>
+                        </div>
+                        <div id="collapse2" class="panel-collapse collapse">
+                            <div class="panel-body">Panel Body</div>
+                            <!--<div class="panel-footer"></div>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-group">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" href="#collapse5">@SX18 [10] </a>
+                            </h4>
+                        </div>
+                        <div id="collapse5" class="panel-collapse collapse">
+                            <div class="panel-body">Panel Body</div>
+                            <!--<div class="panel-footer"></div>-->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        
+            
+
         </div>
 
         <div class="col-md-4">
-            <p>Line Graphs Here</p>
+            <p>Center Content Section</p>
             <div id="dvDemo"></div>
         </div>
 
-        <div class="col-md-4 border">
-            <p>Search Results</p>
+        <div class="col-md-4">
+            <p>Right Content Section</p>
         </div>
     </div>
 
@@ -77,22 +162,42 @@
 
 </div>
 <script type="text/babel">
+    class Quotes extends React.Component {    
+    render() {
+    return (
+    /* const element = <h4>foo dog</h4>; */
+    <ul>
+        <li key="0" className="listItem">
+            {/* TODO: data.value */}
+        </li>
+    </ul>
+    );
+    }
+    }
 
-      ReactDOM.render(
-        <h1>Hello, world!</h1>,
-        document.getElementById('root')
-      );
+    ReactDOM.render(
+    <Quotes />,
+    document.getElementById('listQuotes')
+    );
+
+    ReactDOM.render(
+    <h4>Welcome, username!</h4>,
+    document.getElementById('header')
+    );
 
 </script>
 
 <script type="text/javascript">
+    // DOM Only and ready to add scripts.
     $(document).ready(function () {
-
         console.log("document loaded");
 
-        $('#dvDemo').html('Check');
+        // simple test to 
+        //$('#dvDemo').html('Check');
     });
 
+
+    // The whole window of everything.
     $(window).on("load", function () {
         console.log("window loaded");
     });
