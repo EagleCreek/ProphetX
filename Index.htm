@@ -50,12 +50,7 @@
             <div id="header"></div>
         </div>
         <div class="col-md-4">
-            <input type="text" class="form-control" 
-                   id="searchText" style="width: 140px; float: left;" 
-                   placeholder="Search Symbol" />  
-            <input type="button" 
-             class="btn btn-default" value="Search" onclick="showList();"/>
-          
+            <div class="float-right"><< alert box >></div>
         </div>
     </div>
 
@@ -64,98 +59,390 @@
     <div id="rowBody" class="row">
 
         <div class="col-md-4">
-            
+        <h4>Watch List</h4>
             <!-- categorized collapsable list here -->
-
-            <div id="listQuotes"></div>
-         
-            <section>
+            
+            <section id="corn">
                 <h4>CORN</h4>
-                <div class="panel-group">
+                <div class="panel-group" id="accordionCorn">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title">
-                                <a data-toggle="collapse" href="#collapse1">@CZ17 [10] </a>
+                                <a class="accordion-toggle float-left" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                    @CZ17 [10]
+                                </a>
                             </h4>
+                            <div class="symbolData"><div class="symbolVal">348'0</div><div class="changbox valUp">3'2</div></div>
                         </div>
-                        <div id="collapse1" class="panel-collapse collapse">
+                        <div id="collapseOne" class="panel-collapse collapse in">
                             <div class="panel-body">
-                                Panel Body Four Columns 
+                                <table class="table table-condensed">
+                                    <tr>
+                                        <td>High</td>
+                                        <td class="text-right">2.980</td>
+                                        <td>&nbsp;</td>
+                                        <td>Volume</td>
+                                        <td class="text-right">83316</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Low</td>
+                                        <td class="text-right">2.867</td>
+                                        <td>&nbsp;</td>
+                                        <td>OpenInt</td>
+                                        <td class="text-right">117862</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Open</td>
+                                        <td class="text-right">2.894</td>
+                                        <td>&nbsp;</td>
+                                        <td>Vtlty</td>
+                                        <td class="text-right">0.2859</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bid</td>
+                                        <td class="text-right">2.894</td>
+                                        <td>&nbsp;</td>
+                                        <td>Bid Size</td>
+                                        <td class="text-right">0.2859</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ask</td>
+                                        <td class="text-right">2.894</td>
+                                        <td>&nbsp;</td>
+                                        <td>Ask Size</td>
+                                        <td class="text-right">0.2859</td>
+                                    </tr>
+                                </table>
                             </div>
-                            <!--<div class="panel-footer"></div>-->
                         </div>
                     </div>
-                </div>
-                <div class="panel-group">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title">
-                                <a data-toggle="collapse" href="#collapse3">@CH18 [10] </a>
+                                <a class="accordion-toggle float-left collapsed" data-toggle="collapse" data-parent="#accordionCorn" href="#collapseCH18">
+                                    @CH18 [10]
+                                </a>
                             </h4>
+                            <div class="symbolData"><div class="symbolVal">348'0</div><div class="changbox valDn">3'2</div></div>
                         </div>
-                        <div id="collapse3" class="panel-collapse collapse">
-                            <div class="panel-body">Panel Body</div>
-                            <!--<div class="panel-footer"></div>-->
+                        <div id="collapseCH18" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <table class="table table-condensed">
+                                    <tr>
+                                        <td>High</td>
+                                        <td class="text-right">2.980</td>
+                                        <td>&nbsp;</td>
+                                        <td>Volume</td>
+                                        <td class="text-right">83316</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Low</td>
+                                        <td class="text-right">2.867</td>
+                                        <td>&nbsp;</td>
+                                        <td>OpenInt</td>
+                                        <td class="text-right">117862</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Open</td>
+                                        <td class="text-right">2.894</td>
+                                        <td>&nbsp;</td>
+                                        <td>Vtlty</td>
+                                        <td class="text-right">0.2859</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bid</td>
+                                        <td class="text-right">2.894</td>
+                                        <td>&nbsp;</td>
+                                        <td>Bid Size</td>
+                                        <td class="text-right">0.2859</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ask</td>
+                                        <td class="text-right">2.894</td>
+                                        <td>&nbsp;</td>
+                                        <td>Ask Size</td>
+                                        <td class="text-right">0.2859</td>
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="panel-group">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title">
-                                <a data-toggle="collapse" href="#collapse4">@CK [18] </a>
+                                <a class="accordion-toggle float-left collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                                    @CK18 [10]
+                                </a>
                             </h4>
+                            <div class="symbolData"><div class="symbolVal">348'0</div><div class="changbox valUp">3'2</div></div>
                         </div>
-                        <div id="collapse4" class="panel-collapse collapse">
-                            <div class="panel-body">Panel Body</div>
-                            <!--<div class="panel-footer"></div>-->
+                        <div id="collapseThree" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <table class="table table-condensed">
+                                    <tr>
+                                        <td>High</td>
+                                        <td class="text-right">2.980</td>
+                                        <td>&nbsp;</td>
+                                        <td>Volume</td>
+                                        <td class="text-right">83316</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Low</td>
+                                        <td class="text-right">2.867</td>
+                                        <td>&nbsp;</td>
+                                        <td>OpenInt</td>
+                                        <td class="text-right">117862</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Open</td>
+                                        <td class="text-right">2.894</td>
+                                        <td>&nbsp;</td>
+                                        <td>Vtlty</td>
+                                        <td class="text-right">0.2859</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bid</td>
+                                        <td class="text-right">2.894</td>
+                                        <td>&nbsp;</td>
+                                        <td>Bid Size</td>
+                                        <td class="text-right">0.2859</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ask</td>
+                                        <td class="text-right">2.894</td>
+                                        <td>&nbsp;</td>
+                                        <td>Ask Size</td>
+                                        <td class="text-right">0.2859</td>
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </section>
             
-            <section>
+            <section id="wheat">
                 <h4>WHEAT</h4>
-                <div class="panel-group">
+                <div class="panel-group" id="accordionWheat">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title">
-                                <a data-toggle="collapse" href="#collapse2">@SX17 [10] </a>
+                                <a class="accordion-toggle float-left collapsed" data-toggle="collapse" data-parent="#accordionWheat" href="#collapseWZ17">
+                                    @WZ17 [10]
+                                </a>
                             </h4>
+                            <div class="symbolData"><div class="symbolVal">348'0</div><div class="changbox valUp">3'2</div></div>
                         </div>
-                        <div id="collapse2" class="panel-collapse collapse">
-                            <div class="panel-body">Panel Body</div>
-                            <!--<div class="panel-footer"></div>-->
+                        <div id="collapseWZ17" class="panel-collapse collapse"><!--in-->-->
+                            <div class="panel-body">
+                                <table class="table table-condensed">
+                                    <tr>
+                                        <td>High</td>
+                                        <td class="text-right">2.980</td>
+                                        <td>&nbsp;</td>
+                                        <td>Volume</td>
+                                        <td class="text-right">83316</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Low</td>
+                                        <td class="text-right">2.867</td>
+                                        <td>&nbsp;</td>
+                                        <td>OpenInt</td>
+                                        <td class="text-right">117862</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Open</td>
+                                        <td class="text-right">2.894</td>
+                                        <td>&nbsp;</td>
+                                        <td>Vtlty</td>
+                                        <td class="text-right">0.2859</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bid</td>
+                                        <td class="text-right">2.894</td>
+                                        <td>&nbsp;</td>
+                                        <td>Bid Size</td>
+                                        <td class="text-right">0.2859</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ask</td>
+                                        <td class="text-right">2.894</td>
+                                        <td>&nbsp;</td>
+                                        <td>Ask Size</td>
+                                        <td class="text-right">0.2859</td>
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="panel-group">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title">
-                                <a data-toggle="collapse" href="#collapse5">@SX18 [10] </a>
+                                <a class="accordion-toggle float-left collapsed" data-toggle="collapse" data-parent="#accordionWheat" href="#collapseWH18">
+                                    @WH18 [10]
+                                </a>
                             </h4>
+                            <div class="symbolData"><div class="symbolVal">348'0</div><div class="changbox valDn">3'2</div></div>
                         </div>
-                        <div id="collapse5" class="panel-collapse collapse">
-                            <div class="panel-body">Panel Body</div>
-                            <!--<div class="panel-footer"></div>-->
+                        <div id="collapseWH18" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <table class="table table-condensed">
+                                    <tr>
+                                        <td>High</td>
+                                        <td class="text-right">2.980</td>
+                                        <td>&nbsp;</td>
+                                        <td>Volume</td>
+                                        <td class="text-right">83316</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Low</td>
+                                        <td class="text-right">2.867</td>
+                                        <td>&nbsp;</td>
+                                        <td>OpenInt</td>
+                                        <td class="text-right">117862</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Open</td>
+                                        <td class="text-right">2.894</td>
+                                        <td>&nbsp;</td>
+                                        <td>Vtlty</td>
+                                        <td class="text-right">0.2859</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bid</td>
+                                        <td class="text-right">2.894</td>
+                                        <td>&nbsp;</td>
+                                        <td>Bid Size</td>
+                                        <td class="text-right">0.2859</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ask</td>
+                                        <td class="text-right">2.894</td>
+                                        <td>&nbsp;</td>
+                                        <td>Ask Size</td>
+                                        <td class="text-right">0.2859</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a class="accordion-toggle float-left collapsed" data-toggle="collapse" data-parent="#accordionWheat" href="#collapseWK18">
+                                    @WK18 [10]
+                                </a>
+                            </h4>
+                            <div class="symbolData"><div class="symbolVal">348'0</div><div class="changbox valDn">3'2</div></div>
+                        </div>
+                        <div id="collapseWK18" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <table class="table table-condensed">
+                                    <tr>
+                                        <td>High</td>
+                                        <td class="text-right">2.980</td>
+                                        <td>&nbsp;</td>
+                                        <td>Volume</td>
+                                        <td class="text-right">83316</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Low</td>
+                                        <td class="text-right">2.867</td>
+                                        <td>&nbsp;</td>
+                                        <td>OpenInt</td>
+                                        <td class="text-right">117862</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Open</td>
+                                        <td class="text-right">2.894</td>
+                                        <td>&nbsp;</td>
+                                        <td>Vtlty</td>
+                                        <td class="text-right">0.2859</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bid</td>
+                                        <td class="text-right">2.894</td>
+                                        <td>&nbsp;</td>
+                                        <td>Bid Size</td>
+                                        <td class="text-right">0.2859</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ask</td>
+                                        <td class="text-right">2.894</td>
+                                        <td>&nbsp;</td>
+                                        <td>Ask Size</td>
+                                        <td class="text-right">0.2859</td>
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </section>
-        
             
-
+        <div id="listQuotes"></div>
         </div>
 
         <div class="col-md-4">
-            <p>Center Content Section</p>
-            <div id="dvDemo"></div>
+            <h4>Symbol Search</h4>
+            <div id="searchResults"></div>
+            <input type="text" class="form-control" 
+                   id="searchText" style="width: 240px; float: left;" 
+                   placeholder="Search Symbol" />  
+            <input type="button" 
+                   class="btn btn-default" value="Search" onclick="showList();"/>
+            <table class="table table-condensed">
+                <tr><th>Symbol</th><th>Market</th><th>Price</th><th></th></tr>
+                <tr>
+                    <td>
+                        INE_1MLX340Z_PR_DA_MEC_HR,
+                        description: .H.INTERNAL_HUB - Day Ahead hourly Energy Component Price
+                    </td>
+                    <td>NEI</td>
+                    <td>3.298</td>
+                    <td><button class="btn btn-sm btn-default" id="symbol1" value="Add"><span class="glyphicon glyphicon-plus"></span></button></td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        INE_1MLF340Z_PR_DA_LMP_HR,
+                        description: .H.INTERNAL_HUB - Day Ahead hourly Location Marginal Price
+                    </td>
+                    <td>
+                        NEI
+                    </td>
+                    <td>
+                        3.989
+                    </td>
+                    
+                    <td><button class="btn btn-sm btn-default" id="symbol2" value="Add"  disabled="disabled"><span class="glyphicon glyphicon-plus"></span></button></td>
+                </tr>
+                <tr>
+                    <td>
+                        INE_1MLF340Z_PR_DA_LMP_HR,
+                        description: .H.INTERNAL_HUB - Day Ahead hourly Location Marginal Price
+                    </td>
+                    <td>
+                        NEI
+                    </td>
+                    <td>
+                        3.989
+                    </td>
+                    
+                    <td><button class="btn btn-sm btn-default" id="symbol3" value="Add"  disabled="disabled"><span class="glyphicon glyphicon-plus"></span></button></td>
+                </tr>
+                <tr><td></td><td></td><td></td><td></td></tr>
+            </table>
+            
+          
+          
         </div>
 
-        <div class="col-md-4">
-            <p>Right Content Section</p>
-        </div>
+    <div class="col-md-4">
+        <h4>Charts, Graphs and More</h4>
+        <div id="dvDemo"></div>
+    </div>
+
     </div>
 
 
@@ -176,8 +463,8 @@
     }
 
     ReactDOM.render(
-    <Quotes />,
-    document.getElementById('listQuotes')
+    <!--<Quotes />,
+    document.getElementById('listQuotes')-->
     );
 
     ReactDOM.render(

@@ -136,6 +136,6 @@ function fillList(event) {
                 }
             });
         }
-        $('#listQuotes').html(html);
+        //$('#listQuotes').html(html);
     });
 };
