@@ -7,8 +7,8 @@ function login() {
     var msg = {
         meta: { command: 'Login' },
         data: {
-            username: 'test@eaglecrk.com',
-            password: 'Dakota',
+            username: 'jforst@eaglecrk.com',
+            password: 'd3HPr9',
             appname: 'WSP',
             version: '1.0.0.0',
         }
@@ -66,6 +66,9 @@ function loginSuccessful(evt) {
 
 function loginLookup(msg) {
 
+    var status = msg.meta.status;
+    var data = msg.data;
+
     var infoMsg = data[0].info;
     var id = data[0].whoId; // userId 
     var uName = data[0].username;
@@ -74,8 +77,6 @@ function loginLookup(msg) {
     $('#msgWelcome').html(welcom);
 
     $('#loggedIn').css("display", "");// Show the Logged In panel
-    var status = msg.meta.status;
-    var data = msg.data;
     
     var myQuotes = {
         // json list   
