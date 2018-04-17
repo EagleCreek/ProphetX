@@ -7,8 +7,8 @@ function login() {
     var msg = {
         meta: { command: 'Login' },
         data: {
-            username: 'test@eaglecrk.com',
-            password: 'Dakota',
+            username: 'jforst@eaglecrk.com',
+            password: 'd3HPr9',
             appname: 'WSP',
             version: '1.0.0.0',
         }
@@ -40,7 +40,7 @@ function loginSuccessful(evt) {
                     errMsg += detail;
                     $('#loginError').html(errMsg);
                 } else {
-                     loginLookup(msg);
+                     loginLookup(msg);// get myQuoteList from localStorage
                 }
             break;
         }
@@ -51,7 +51,9 @@ function loginSuccessful(evt) {
     }
 }
 
+
 function loginLookup(msg) {
+// This hits the websocket for quote list data to be displayed on left
 
     var status = msg.meta.status;
     var data = msg.data;
@@ -72,176 +74,213 @@ function loginLookup(msg) {
     // ... add here 
     // read from store based on the id
     // list for each user
-
     
     // Get Quote list for logged in user 
-   
-        //console.log('Login successful');
-        var request = {
-            meta: {
-                command: 'ChartSnap',
-                requestId: 1,
-            },
-            data: {
-                expression: 'MSFT',
-                fields: ['Last', 'Open', 'High', 'Low', 'Close', 'Settlement', 'TradeDateTime'],
-                updateInterval: 0.5
-            }
-        };
 
-        // Send one request for each test symbol
-        //for (var i = 0; i < SYMBOLS.length; i++) {
-        //    request.meta.requestId += 1;
-        //    request.data.expression = SYMBOLS[i];
-        //    console.log('Sent request ' + request.meta.requestId + ': ' + JSON.stringify(request));
-            //WEBSOCKET.send(JSON.stringify(request))
-        //}
+    //chartSnap();
+    //symbolSearch();
+    //chartWatch();
+
+}
+
+
+function logout() {
+    $('#loginInfo').show();
+    $('#loggedIn').hide();
+}
+
+
+
+
+function symbolSearch() {
+    var request = {
+        meta: {
+            command: "SymbolSearch",
+            requestId: 17
+        },
+        data: {
+            sympat: "@C`##", // replace with value from form
+            limit: 15
+        }
+    }
+
+    WEBSOCKET.send(JSON.stringify(request));
+
+    WEBSOCKET.onmessage = function (result) {
+
+        var data = JSON.parse(result.data);
+
+        var vals = data.data;
+        var symValues = "";
+        $.each(vals, function (index, i) {
+            var accordionHtml = "" + i;
+            //symValues += "<tr><td></td><td>" + i.value + "</td><td>&nbsp;</td><td>Volume</td><td>" + i.othervalue + "</td></tr>";
+        });
+
+        //var status = data.meta.status;
+        //var symbols = data.meta.symbols;
+        //var exp = data.meta.expression;
+        //var desc = data.meta.expressionDesc;
+
+        //var itemId = exp;
+        //var accordion = "accordion" + exp;
+        //var valuTable = "table" + exp;
+
+        //var vals = data.data;
+        //var symValues = "";
+        //$.each(vals, function (index, i) {
+        //    var accordionHtml = "";
+
+        //    symValues += "<tr><td>High</td><td>" + i.High + "</td><td>&nbsp;</td><td>Volume</td><td>" + i.Volume + "</td></tr>";
+        //    symValues += "<tr><td>Low</td><td>" + i.Low + "</td><td>&nbsp;</td><td>OpenInit</td><td>" + i.OpenInit + "</td></tr>";
+        //    symValues += "<tr><td>Open</td><td>" + i.Open + "</td><td>&nbsp;</td><td>Close</td><td>" + i.Close + "</td></tr>";
+        //});
+    };
     
-   
+
+
+
+}
+
+function quoteWatch() {
+
+    var request = {
+        meta: {
+            command: "QuoteWatch",
+            requestId: 6
+        },
+        data: {
+            expression: "MSFT",// TODO: update value
+            fields: [
+                "Last",
+                "CumVolume",
+                "LastTicknum"
+            ],
+            priceFormat: "text",
+            timeFormat: "text",
+            symbolFormat: "text",
+            updateInterval: 0.5
+        }
+    };
+    WEBSOCKET.send(JSON.stringify(request));
+
+    WEBSOCKET.onmessage = function (result) {
+        // loop through results and display
+
+    };
+
+}
+
+function quoteSnap() {
+    var request = {
+        meta: {
+            command: "QuoteSnap",
+            requestId: 1
+        },
+        data: {
+            expression: "TWTR",
+            fields: [
+                "Last",
+                "CumVolume",
+                "LastTicknum"
+            ],
+            priceFormat: "text",
+            timeFormat: "text",
+            symbolFormat: "text"
+        }
+    }
+    WEBSOCKET.send(JSON.stringify(request));
+
+    WEBSOCKET.onmessage = function (result) {
+        // loop through results and display
+
+    };
 }
 
 
-
-//function onLogin(msg) {
-//    // Check if the login was successful
-//    // then show me my list of quotes
-//    if (msg.meta.status == 200) {
-//        console.log('Login successful');
-//        var request = {
-//            meta: {
-//                command: 'QuoteWatch',
-//                requestId: 1,
-//            },
-//            data: {
-//                expression: 'MSFT',
-//                fields: ['Last', 'Open', 'High', 'Low', 'Close', 'Settlement', 'TradeDateTime'],
-//                updateInterval: 0.5
-//            }
-//        };
-
-//        // Send one request for each test symbol
-//        //for (var i = 0; i < SYMBOLS.length; i++) {
-//        //    request.meta.requestId += 1;
-//        //    request.data.expression = SYMBOLS[i];
-//        //    console.log('Sent request ' + request.meta.requestId + ': ' + JSON.stringify(request));
-//        //    WEBSOCKET.send(JSON.stringify(request))
-//        //}
-//    }
-//    else {
-//        console.log('Login failed');
-//    }
-//}
-
-
-
-
-
-
-
-
-
-
-function showList(id, username) {
-    //alert('foo');
-
-    var password = $('#txtPassword').val();
-
-    var data = {
-        "meta": {
-            "command": "Login",
-            "requestId": id
+function chartWatch() {
+    var request = {
+        meta: {
+            command: "ChartWatch",
+            requestId: 20
         },
-        "data": {
-            "username": username,
-            "password": password,
-            "appname": "WSP",
-            "version": "1.0.0.0",
-            "metadata": [
-                {
-                    "name": "studies",
-                    "version": 1,
-                    "datetime": null
-                }
-            ]
+        data: {
+            expression: "GOOG",
+                limit: 100,
+                interval: "MINUTE",
+                intervalCount: 10
         }
+    }
+
+
+    WEBSOCKET.send(JSON.stringify(request));
+
+    WEBSOCKET.onmessage = function (result) {
+        var data = JSON.parse(result.data);
+        var status = data.meta.status;
+        var symbols = data.meta.symbols;
+        var exp = data.meta.expression;
+        var desc = data.meta.expressionDesc;
+
+        var itemId = exp;
+        var accordion = "accordion" + exp;
+        var valuTable = "table" + exp;
+
+        var vals = data.data;
+        var symValues = "";
+        $.each(vals, function (index, i) {
+            var accordionHtml = "";
+
+            //symValues += "<tr><td>High</td><td>" + i.High + "</td><td>&nbsp;</td><td>Volume</td><td>" + i.Volume + "</td></tr>";
+            //symValues += "<tr><td>Low</td><td>" + i.Low + "</td><td>&nbsp;</td><td>OpenInit</td><td>" + i.OpenInit + "</td></tr>";
+            //symValues += "<tr><td>Open</td><td>" + i.Open + "</td><td>&nbsp;</td><td>Close</td><td>" + i.Close + "</td></tr>";
+        });
+
     };
-
-    var chartSnap = {
-        "meta": {
-            "command": "ChartSnap",
-            "requestId": 2
-        },
-        "data": {
-            "expression": "@ES@1", // passed in search text 
-            "limit": 100,
-            "interval": "MINUTE",
-            "intervalCount": 5
-        }
-    };
-
-    // Simple GET 
-    $.ajax({
-        type: "GET",
-        dataType: "json",
-        data: JSON.stringify(data),
-        url: "https://ws1.dtn.com/SymbolSearch/GetVersion",
-        success: function (data) {
-
-            var html = data.meta.status;
-            $('#dvDemo').html(html);
-            
-
-     //Bind to list items
-            alert(data);
-        }
-    });
-
-    // Simple POST
-    var ids = { id: id };
-    var htmlOutput = "";
-    $.ajax({
-        type: "POST",
-        dataType: "JSON",
-        //contentType: "application/json; charset=utf-8",
-        url: 'https://ws1.dtn.com/SymbolSearch/GetVersion',
-        data: JSON.stringify(ids),
-        success: function (result) {
-            alert('success');
-            $.each(result, function(index, i) {
-                // do stuff with the results
-                // append html strings
-                htmlOutput += i;
-            });
-            // write html output to a div
-            //$('#dvDemo').html(html);
-
-        },
-        error: function(result) {
-            alert('fail');
-            // could output results here. 
-        }
-    });
+    
 }
 
 
+function chartSnap() {
 
+    var request = {
+        meta: {
+            command: "ChartSnap",
+            requestId: 10
+        },
+        data: {
+            expression: "@ES@1",
+            limit: 100,
+            interval: "MINUTE",
+            intervalCount: 5
+        }
+    };
+    WEBSOCKET.send(JSON.stringify(request));
 
+    WEBSOCKET.onmessage = function (result) {
+      
 
+    };
+    //var data = JSON.parse(evt.data);
+    //var status = data.meta.status;
+    //var symbols = data.meta.symbols;
+    //var exp = data.meta.expression;
+    //var desc = data.meta.expressionDesc;
 
+    //var itemId = exp;
+    //var accordion = "accordion" + exp;
+    //var valuTable = "table" + exp;
 
-//const http = require('http');
+    //var vals = data.data;
+    //var symValues = "";
+    //$.each(vals, function (index, i) {
+    //    var accordionHtml = "";
 
-//const hostname = '127.0.0.1';
-//const port = 3000;
+    //    symValues += "<tr><td>High</td><td>" + i.High + "</td><td>&nbsp;</td><td>Volume</td><td>" + i.Volume + "</td></tr>";
+    //    symValues += "<tr><td>Low</td><td>" + i.Low + "</td><td>&nbsp;</td><td>OpenInit</td><td>" + i.OpenInit + "</td></tr>";
+    //    symValues += "<tr><td>Open</td><td>" + i.Open + "</td><td>&nbsp;</td><td>Close</td><td>" + i.Close + "</td></tr>";
+    //});
+}
 
-//const server = http.createServer((req, res) => {
-//    res.statusCode = 200;
-//    res.setHeader('Content-Type', 'text/plain');
-//    res.end('Hello World\n');
-//});
-
-//server.listen(port, hostname, () => {
-//    console.log(`Server running at http://${hostname}:${port}/`);
-//});
 
 
