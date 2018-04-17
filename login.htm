@@ -1,148 +1,77 @@
-<html><head>
-<meta charset="utf-8">
-<title>MarketDataAPI WebSocket Example</title>
+<html>
+<head>
+    <title>ProphetX</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="Content/themes/base/all.css" rel="stylesheet" />
+    <link href="Content/Site.css" rel="stylesheet" />
 
-<script language="javascript" type="text/javascript">
-
-// Set the connection information
-var WS_URL = 'wss://ProphetX14.dtn.com/cs/1.0';
-var WS_USERNAME = 'username';
-var WS_PASSWORD = '';
-
-// List of test symbols
-var SYMBOLS = ['@C@1', '@S@C', 'QCL@C', 'GOOG', '@ES@1']
-
-var WEBSOCKET = null;
-
-function doLogin()
-{
-  WS_USERNAME = document.getElementById('username').value;
-  WS_PASSWORD = document.getElementById('password').value;
-
-  document.getElementById('LoginInfo').style.display = 'none';
-
-  WEBSOCKET = new WebSocket(WS_URL);
-  WEBSOCKET.onopen = onOpen;
-  WEBSOCKET.onclose = onClose;
-  WEBSOCKET.onmessage = onMessage;
-  WEBSOCKET.onerror = onError;
-}
-
-function onOpen(evt)
-{
-  // Send the login message
-  console.log('Sending login message on opened connection');
-  var msg = {
-            meta: {command: 'Login'},
-            data: {
-              username: WS_USERNAME,
-              password: WS_PASSWORD,
-              appname: 'testApp',
-              version: '1.0.0.0',
-              }
-            };
-  WEBSOCKET.send(JSON.stringify(msg));
-}
-
-function onMessage(evt)
-{
-  console.log('Received message: ' + evt.data);
-  showText('<pre>' + evt.data + '</pre>');
-  var msg = JSON.parse(evt.data);
-  switch(msg.meta.command)
-  {
-    case 'Login':
-    {
-      onLogin(msg);
-      break;
-    }
-            
-    default:
-    {
-      break;
-    }
-  }
-}
-
-function onLogin(msg)
-{
-  // Check if the login was successful
-  if(msg.meta.status == 200)
-  {
-    console.log('Login successful');
-    var request = {
-        meta: {
-          command: 'QuoteWatch',
-          requestId: 1,
-          },
-        data: {
-          expression: 'PLACEHOLDER_SYMBOL',
-          fields: ['Last', 'Open', 'High', 'Low', 'Close', 'Settlement', 'TradeDateTime'],
-          updateInterval: 0.5
-          }
-        };
-    // Send one request for each test symbol
-    var toc = '<ul>'
-    for (var i = 0; i < SYMBOLS.length; i++) {
-      request.meta.requestId += 1;
-      request.data.expression = SYMBOLS[i];
-      console.log('Sent request ' + request.meta.requestId + ': ' + JSON.stringify(request));
-      toc += '<li>Request ID ' + request.meta.requestId + ' for ' + SYMBOLS[i] + '\n'
-      WEBSOCKET.send(JSON.stringify(request))
-    }
-    toc += '</ul>'
-    document.getElementById('toc').innerHTML = toc
-  }
-  else
-  {
-    'Login failed';
-  }
-}
-
-function onClose(evt)
-{
-  reset('Connection closed with code ' + evt.code + ' and reason: ' + evt.reason);
-}
-
-function onError(evt)
-{
-  reset('Connection error: ' + evt.data);
-}
-
-function reset(msg)
-{
-  document.getElementById('LoginInfo').style.display = 'block';
-  document.getElementById('toc').innerHTML = '';
-  showText(msg)
-}
-
-function showText(msg)
-{
-  document.getElementById('messages').innerHTML = msg;
-}
-</script>
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+	
+    <!--<script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>-->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+	<script src="src/login.js"></script>
 </head>
 <body>
-<h2>ProphetX MarketData API Websockets Example</h2>
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">ProphetX</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Home</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Log off? </a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
 <div id="LoginInfo">
     <p>
     Enter your username and password to see market data updates for common symbols.
     </p>
     <form>
-        <table>
-            <tbody><tr>
-                <td>Username</td>
-                <td><input id="username" type="text" size="75"></td>
-            </tr>
-            <tr>
-                <td>Password</td>
-                <td><input id="password" type="password" size="75"></td>
-            </tr>
-        </tbody></table>
-        <input id="gobutton" value="GO!" type="button" onclick="doLogin()">
+
+		<div id="rowBody" class="row">
+			<div class="col-md-4">
+				<div id="listQuotes"></div>
+					<section>
+						<label>Username</label>
+						<div class="panel-group">
+							<input id="username" class="form-control" type="text" maxlength="50"/>
+						</div>
+						<label>Password</label>
+						<div class="panel-group">
+							<input id="password" class="form-control" type="password" maxlength="50"/>
+						</div>
+						<div class="checkbox">
+							<label><input id="remember" type="checkbox">Remember Password</label>
+						</div>
+					</section>
+				</div>
+			</div>
+		</div>
+
+		<input id="loginButton" class="btn btn-default" value="Login" type="button" onclick="doLogin()">
+		<br>
+		<label>Current App Version: </label>
     </form>
 </div>
-<p id="toc"></p>
 <p id="messages"></p>
 
  </body></html>
