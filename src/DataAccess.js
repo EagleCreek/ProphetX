@@ -21,23 +21,10 @@ WEBSOCKET.onmessage = loginSuccessful;
 
 
 function loginSuccessful(evt) {
-    var html = "";
+  
     //var result = "Received message: " + evt.data;
     var msg = JSON.parse(evt.data);
 
-    
-//    "{
-//    "meta": {
-//        "command": "Login",
-//            "status": 401
-//    },
-//    "errors": [
-//        {
-//            "code": "Login Error",
-//            "detail": "Login Rejected: Incorrect user password."
-//        }
-//    ]
-//} "
     var cmd = msg.meta.command;
     var status = msg.meta.status;
     var err = msg.errors;
@@ -75,8 +62,8 @@ function loginLookup(msg) {
     
     var welcom = "<h5>Welcome, " + infoMsg + "</h5>";
     $('#msgWelcome').html(welcom);
-
-    $('#loggedIn').css("display", "");// Show the Logged In panel
+    $('#loginInfo').hide();
+    $('#loggedIn').show();// Show the Logged In panel
     
     var myQuotes = {
         // json list   
