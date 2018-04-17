@@ -7,8 +7,8 @@ function login() {
     var msg = {
         meta: { command: 'Login' },
         data: {
-            username: 'jforst@eaglecrk.com',
-            password: 'd3HPr9',
+            username: 'test@eaglecrk.com',
+            password: 'Dakota',
             appname: 'WSP',
             version: '1.0.0.0',
         }
@@ -91,7 +91,7 @@ function loginLookup(msg) {
         //console.log('Login successful');
         var request = {
             meta: {
-                command: 'QuoteWatch',
+                command: 'ChartSnap',
                 requestId: 1,
             },
             data: {
