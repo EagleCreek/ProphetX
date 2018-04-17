@@ -10,9 +10,9 @@
 //test - mm
 
 WEBSOCKET = new WebSocket('wss://ProphetX14.dtn.com/cs/1.0');
-WEBSOCKET.onopen = onOpen;
+//WEBSOCKET.onopen = onOpen;
 //WEBSOCKET.onclose = onClose;
-WEBSOCKET.onmessage = onMessage;
+//WEBSOCKET.onmessage = onMessage;
 WEBSOCKET.onerror = onError;
 
 function onOpen(evt) {
@@ -139,3 +139,6 @@ function fillList(event) {
         //$('#listQuotes').html(html);
     });
 };
+
+
+

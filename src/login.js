@@ -123,3 +123,5 @@ function showText(msg)
 {
 	document.getElementById('messages').innerHTML = msg;
 }
+
+
