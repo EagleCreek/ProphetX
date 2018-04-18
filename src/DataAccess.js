@@ -17,7 +17,7 @@ function login() {
     $('#loginError').html(""); // Clear out value
 }
 
-WEBSOCKET.onmessage = loginSuccessful;
+WEBSOCKET.onmessage = loginSuccessful; 
 
 
 function loginSuccessful(evt) {
