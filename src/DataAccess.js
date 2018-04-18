@@ -1,4 +1,5 @@
 ﻿WEBSOCKET = new WebSocket('wss://ProphetX14.dtn.com/cs/1.0');
+var myQuotes = [];
 
 function login() {
     var uname = $('#username').val();
@@ -15,8 +16,8 @@ function login() {
         }
     };
     WEBSOCKET.send(JSON.stringify(msg));// submit json
-    $('#loginError').html(""); // Clear out value
-    WEBSOCKET.onmessage = loginSuccessful; 
+   $('#loginError').html(""); // Clear out value
+   WEBSOCKET.onmessage = loginSuccessful;
 }
 
 
@@ -68,11 +69,14 @@ function loginLookup(msg) {
     $('#loginInfo').hide();
     $('#loggedIn').show();// Show the Logged In panel
     
-    var myQuotes = {
-        // json list   
-    };
+    
     // add to local store
     // ... add here 
+	var localUserData = localStorage.getItem(uName);
+	if(localUserData !== null) {
+		myQuotes = JSON.parse(localUserData);
+		console.log(myQuotes);
+	}
     // read from store based on the id
     // list for each user
     
@@ -81,6 +85,7 @@ function loginLookup(msg) {
     //chartSnap();
     //symbolSearch();
     //chartWatch();
+	quoteWatch();
 
 }
 
@@ -144,18 +149,17 @@ function symbolSearch() {
 }
 
 function quoteWatch() {
-    var symbols = [];
+
     var request = {
         meta: {
             command: "QuoteWatch",
             requestId: 6
         },
         data: {
-            expression: "MSFT",// TODO: update value
+            expression: "PLACEHOLDER_SYMBOL",
             fields: [
                 "Last",
-                "CumVolume",
-                "LastTicknum"
+                "CumVolume"
             ],
             priceFormat: "text",
             timeFormat: "text",
@@ -163,10 +167,37 @@ function quoteWatch() {
             updateInterval: 0.5
         }
     };
-    WEBSOCKET.send(JSON.stringify(request));
+
+	for (var i = 0; i < myQuotes.length; i++) {
+		request.meta.requestId = myQuotes[i].requestId;
+		request.data.expression = myQuotes[i].symbol;
+		//console.log('Sent request ' + request.meta.requestId + ': ' + JSON.stringify(request));
+		WEBSOCKET.send(JSON.stringify(request));
+	}
+    
 
     WEBSOCKET.onmessage = function (result) {
         // loop through results and display
+		var data = JSON.parse(result.data);
+
+        var vals = data.data;
+        var symValues = "";
+		var requestId = 'requestId' + data.meta.requestId;
+        $.each(vals, function (index, i) {
+            var accordionHtml = "" + i;
+			//console.log('last = ' + i.Last);
+			//console.log('CumVolume = ' + i.CumVolume);
+            symValues += "<div id='" + requestId + "'><tr><td>Last: </td><td>" + i.Last + "</td><td>&nbsp;</td><td>Volume: </td><td>" + i.CumVolume + "</td></tr></div>";
+			//$('#messages').append(symValues);
+			if($('#' + requestId).length == 0) {
+				$('#messages').append(symValues);
+				
+			}
+			else {
+				$('#' + requestId).html(symValues);
+			}
+			console.log(symValues);
+        });
 
     };
 
