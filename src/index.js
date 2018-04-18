@@ -1,94 +1,84 @@
-﻿//import React from 'react';
-//import ReactDOM from 'react-dom';
-
-//ReactDOM.render(
-//    <h1>Hello, world!</h1>,
-//    document.getElementById('root')
-//);
-
-//Test
-//test - mm
-
-WEBSOCKET = new WebSocket('wss://ProphetX14.dtn.com/cs/1.0');
-WEBSOCKET.onopen = onOpen;
+﻿
+//WEBSOCKET = new WebSocket('wss://ProphetX14.dtn.com/cs/1.0');
+//WEBSOCKET.onopen = onOpen;
 //WEBSOCKET.onclose = onClose;
-WEBSOCKET.onmessage = onMessage;
-WEBSOCKET.onerror = onError;
+//WEBSOCKET.onmessage = onMessage;
+//WEBSOCKET.onerror = onError;
 var requestID = 2;
 
-function onOpen(evt) {
-    //alert('Sending login message on opened connection');
-    // Send the login message
-    console.log('Sending login message on opened connection');
-    var msg = {
-        meta: { command: 'Login' },
-        data: {
-            username: 'test@eaglecrk.com',
-            password: 'Dakota',
-            appname: 'testApp',
-            version: '1.0.0.0',
-        }
-    };
-    WEBSOCKET.send(JSON.stringify(msg));
-}
+//function onOpen(evt) {
+//    //alert('Sending login message on opened connection');
+//    // Send the login message
+//    console.log('Sending login message on opened connection');
+//    var msg = {
+//        meta: { command: 'Login' },
+//        data: {
+//            username: 'test@eaglecrk.com',
+//            password: 'Dakota',
+//            appname: 'testApp',
+//            version: '1.0.0.0',
+//        }
+//    };
+//    WEBSOCKET.send(JSON.stringify(msg));
+//}
 
-function onMessage(evt) {
-    var htmlOutput = "~";
-    console.log('Received message: ' + evt.data);
-    var msg = JSON.parse(evt.data);
-    switch (msg.meta.command) {
-    case 'Login':
-        {
-                onLogin(msg);
+//function onMessage(evt) {
+//    var htmlOutput = "~";
+//    console.log('Received message: ' + evt.data);
+//    var msg = JSON.parse(evt.data);
+//    switch (msg.meta.command) {
+//    case 'Login':
+//        {
+//                onLogin(msg);
                 
-                $.each(msg, function (index, i) {
-                    if (index == 'data') {
-                        $.each(msg.data, function (indexSecond, i) {
-                            $('#header').html("Welcome, " + i.username);
-                        });
-                    }
-                    htmlOutput += i.command + " ";
-                    htmlOutput += i.status + " ";
-                });
-                $('#dvDemo').html(htmlOutput);
-            break;
-        }
+//                $.each(msg, function (index, i) {
+//                    if (index == 'data') {
+//                        $.each(msg.data, function (indexSecond, i) {
+//                            $('#header').html("Welcome, " + i.username);
+//                        });
+//                    }
+//                    htmlOutput += i.command + " ";
+//                    htmlOutput += i.status + " ";
+//                });
+//                $('#dvDemo').html(htmlOutput);
+//            break;
+//        }
 
-    default:
-        {
-            break;
-        }
-    }
-}
+//    default:
+//        {
+//            break;
+//        }
+//    }
+//}
 
-function onLogin(msg) {
-    // Check if the login was successful
-    if (msg.meta.status == 200) {
-        console.log('Login successful');
-        var request = {
-            meta: {
-                command: 'QuoteWatch',
-                requestId: 1,
-            },
-            data: {
-                expression: 'MSFT',
-                fields: ['Last', 'Open', 'High', 'Low', 'Close', 'Settlement', 'TradeDateTime'],
-                updateInterval: 0.5
-            }
-        };
+//function onLogin(msg) {
+//    // Check if the login was successful
+//    if (msg.meta.status == 200) {
+//        console.log('Login successful');
+//        var request = {
+//            meta: {
+//                command: 'QuoteWatch',
+//                requestId: 1,
+//            },
+//            data: {
+//                expression: 'MSFT',
+//                fields: ['Last', 'Open', 'High', 'Low', 'Close', 'Settlement', 'TradeDateTime'],
+//                updateInterval: 0.5
+//            }
+//        };
 
-        // Send one request for each test symbol
-        //for (var i = 0; i < SYMBOLS.length; i++) {
-        //    request.meta.requestId += 1;
-        //    request.data.expression = SYMBOLS[i];
-        //    console.log('Sent request ' + request.meta.requestId + ': ' + JSON.stringify(request));
-        //    WEBSOCKET.send(JSON.stringify(request))
-        //}
-    }
-    else {
-        console.log('Login failed');
-    }
-}
+//        // Send one request for each test symbol
+//        //for (var i = 0; i < SYMBOLS.length; i++) {
+//        //    request.meta.requestId += 1;
+//        //    request.data.expression = SYMBOLS[i];
+//        //    console.log('Sent request ' + request.meta.requestId + ': ' + JSON.stringify(request));
+//        //    WEBSOCKET.send(JSON.stringify(request))
+//        //}
+//    }
+//    else {
+//        console.log('Login failed');
+//    }
+//}
 
 
 function onError(msg) {
@@ -96,8 +86,9 @@ function onError(msg) {
 }
 
 
-function search(msg) {
-    WEBSOCKET.onopen = onOpen;
+function search() {
+
+    //WEBSOCKET.onopen = onOpen;
     var CZ17Show = "~";
     var symbols = $('#searchText').val();
     var msg = {
@@ -118,29 +109,50 @@ function search(msg) {
 
         var eventData = event.data;
         //.replace(/(\r\n\t|\n|\r\t)/gm,"");;
-        console.log(eventData);
-        var eventDataData = JSON.parse(eventData).data;
-        console.log(eventDataData);
-        var searchResults = $("#searchResults");
-        searchResults.html("<tr><th>Symbol</th><th>Description</th><th></th></tr>");
-        $.each(eventDataData, function (inx, eventDataData) {
-            var tableRow = "<tr>";
-            tableRow += "<td>" + eventDataData.symbol + "</td>";
-            tableRow += "<td>" + eventDataData.description + "</td>";
+        //console.log(eventData);
+        var data = JSON.parse(eventData);
+        var status = data.meta.status;
 
-            tableRow += '<td><button class="btn btn-sm btn-default" id="symbol1" value="Add" ';
-            tableRow += 'onclick = "addQuote(';
-            tableRow += "'" + eventDataData.symbol + "','" + eventDataData.description + "'";
-            tableRow += ')">';
+        // Check Status for a 200 success, or not... 
+        if (status !== 200) { 
 
-            tableRow += '<span class="glyphicon glyphicon-plus"></span></button ></td > ';
-            tableRow += '</tr>';
+            var errMsg = "<b>" + data.errors[0].code + "</b> " + data.errors[0].detail;
+            $('#searchError').html(errMsg);
 
-            searchResults.append(tableRow);
-        });
+        } else {
+
+            $('#searchError').html("");// empty msg if any. 
+
+            var searchResults = $("#searchResults").val();
+            searchResults.html("<tr><th>Symbol</th><th>Description</th><th></th></tr>");
+            $.each(data, function (index, eventDataData) {
+                var tableRow = "<tr>";
+                tableRow += "<td>" + eventDataData.symbol + "</td>";
+                tableRow += "<td>" + eventDataData.description + "</td>";
+
+                tableRow += '<td><button class="btn btn-sm btn-default" id="symbol1" value="Add" ';
+                // TODO: we need to be consistent with our single and double quotes.
+                //tableRow += "<td><button class='btn btn-sm btn-default' id='symbol1' value='Add' ";
+
+                tableRow += 'onclick = "addQuote(';
+                tableRow += "'" + eventDataData.symbol + "','" + eventDataData.description + "'";
+                tableRow += ')">';
+
+                tableRow += '<span class="glyphicon glyphicon-plus"></span></button></td > ';
+                tableRow += '</tr>';
+
+                searchResults.append(tableRow);
+            });
+
+
+        }
+       
     };
 }
 
+
+// This function adds the selected symbol to the in memory list
+// TODO: commit to localStorage for retrevial. 
 function addQuote(symbol, description) {
     //Get the label from description(Split function).
     var splitDescription = description.split(" ");
@@ -261,7 +273,7 @@ function buildPanelGroup(symbol, label) {
 }
 
 function getSymbolData(symbol, label) {
-    WEBSOCKET.onopen = onOpen;
+    //WEBSOCKET.onopen = onOpen;
     var msg = {
         meta: {
             command: "QuoteSnap",

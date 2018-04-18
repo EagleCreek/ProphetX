@@ -1,4 +1,5 @@
 ﻿WEBSOCKET = new WebSocket('wss://ProphetX14.dtn.com/cs/1.0');
+
 function login() {
     var uname = $('#username').val();
     var pwd = $('#password').val();
@@ -15,9 +16,9 @@ function login() {
     };
     WEBSOCKET.send(JSON.stringify(msg));// submit json
     $('#loginError').html(""); // Clear out value
+    WEBSOCKET.onmessage = loginSuccessful; 
 }
 
-WEBSOCKET.onmessage = loginSuccessful; 
 
 
 function loginSuccessful(evt) {
@@ -143,7 +144,7 @@ function symbolSearch() {
 }
 
 function quoteWatch() {
-
+    var symbols = [];
     var request = {
         meta: {
             command: "QuoteWatch",
