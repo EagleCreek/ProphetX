@@ -7,8 +7,8 @@ function login() {
     var msg = {
         meta: { command: 'Login' },
         data: {
-            username: 'jforst@eaglecrk.com',
-            password: 'd3HPr9',
+            username: uname,
+            password: pwd,
             appname: 'WSP',
             version: '1.0.0.0',
         }
