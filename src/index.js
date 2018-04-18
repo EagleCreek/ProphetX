@@ -4,7 +4,7 @@
 //WEBSOCKET.onclose = onClose;
 //WEBSOCKET.onmessage = onMessage;
 //WEBSOCKET.onerror = onError;
-var requestID = 2;
+var requestID = 1;
 
 //function onOpen(evt) {
 //    //alert('Sending login message on opened connection');
@@ -121,11 +121,12 @@ function search() {
 
         } else {
 
-            $('#searchError').html("");// empty msg if any. 
+            $('#searchError').html("");// empty msg if any.
+            //var eventDataData = data.data;
 
-            var searchResults = $("#searchResults").val();
+            var searchResults = $("#searchResults");
             searchResults.html("<tr><th>Symbol</th><th>Description</th><th></th></tr>");
-            $.each(data, function (index, eventDataData) {
+            $.each(data.data, function (index, eventDataData) {
                 var tableRow = "<tr>";
                 tableRow += "<td>" + eventDataData.symbol + "</td>";
                 tableRow += "<td>" + eventDataData.description + "</td>";
@@ -154,6 +155,18 @@ function search() {
 // This function adds the selected symbol to the in memory list
 // TODO: commit to localStorage for retrevial. 
 function addQuote(symbol, description) {
+    var mySymbols = {};
+    var uName = $('#uName').text();
+    var localUserData = myStorage.getItem(uName);
+    if (localUserData !== null) {
+        myQuotes = JSON.parse(localUserData);
+        if (myQuotes != null) {
+            //mySymbols = myQuotes.symbols;
+            var sym = [{ symbol: symbol , requestId: 1 }];
+        }
+    }
+
+
     //Get the label from description(Split function).
     var splitDescription = description.split(" ");
     var label = "";

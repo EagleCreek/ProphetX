@@ -1,5 +1,6 @@
 ﻿WEBSOCKET = new WebSocket('wss://ProphetX14.dtn.com/cs/1.0');
 var myQuotes = [];
+var myStorage = window.localStorage;
 
 function login() {
     var uname = $('#username').val();
@@ -9,8 +10,8 @@ function login() {
     var msg = {
         meta: { command: 'Login' },
         data: {
-            username: uname,
-            password: pwd,
+            username: 'test@eaglecrk.com',
+            password: 'Dakota',
             appname: 'WSP',
             version: '1.0.0.0',
         }
@@ -63,6 +64,7 @@ function loginLookup(msg) {
     var infoMsg = data[0].info;
     var id = data[0].whoId; // userId 
     var uName = data[0].username;
+    $('#uName').html(uName);
     
     var welcom = "<h5>Welcome, " + infoMsg + "</h5>";
     $('#msgWelcome').html(welcom);
@@ -71,21 +73,30 @@ function loginLookup(msg) {
     
     
     // add to local store
-    // ... add here 
-	var localUserData = localStorage.getItem(uName);
-	if(localUserData !== null) {
-		myQuotes = JSON.parse(localUserData);
-		console.log(myQuotes);
-	}
-    // read from store based on the id
-    // list for each user
+
     
-    // Get Quote list for logged in user 
+
+    // ... add here 
+	var localUserData = myStorage.getItem(uName);
+    if (localUserData !== null) {
+        myQuotes = JSON.parse(localUserData);
+        if (myQuotes != null) {
+            quoteWatch();
+        }
+    }
+    else {
+        var userData = {
+            symbols: [{ symbol: '', requestId: requestID }]
+            //symbols: [{ symbol: 'GOOG', requestId: 2 }, { symbol: '@ES@1', requestId: 3 }, { symbol: 'TWTR', requestId: 4 }]
+
+        };
+        myStorage.setItem(uName, JSON.stringify(userData));
+        myQuotes = JSON.parse(myStorage.getItem(uName));
+    }
 
     //chartSnap();
     //symbolSearch();
     //chartWatch();
-	quoteWatch();
 
 }
 
@@ -168,15 +179,23 @@ function quoteWatch() {
         }
     };
 
-	for (var i = 0; i < myQuotes.length; i++) {
-		request.meta.requestId = myQuotes[i].requestId;
-		request.data.expression = myQuotes[i].symbol;
+    for (var i = 0; i < myQuotes.symbols.length; i++) {
+        var item = myQuotes.symbols[i];
+		request.meta.requestId = item.requestId;
+		request.data.expression = item.symbol;
 		//console.log('Sent request ' + request.meta.requestId + ': ' + JSON.stringify(request));
-		WEBSOCKET.send(JSON.stringify(request));
+        if (item.symbol.length > 0) {
+            WEBSOCKET.send(JSON.stringify(request));
+            WEBSOCKET.onmessage = parseQuotes(result);
+        }
 	}
-    
 
-    WEBSOCKET.onmessage = function (result) {
+
+
+}
+
+    function parseQuotes(result) {
+    
         // loop through results and display
 		var data = JSON.parse(result.data);
 
@@ -191,7 +210,7 @@ function quoteWatch() {
 			//$('#messages').append(symValues);
 			if($('#' + requestId).length == 0) {
 				$('#messages').append(symValues);
-				
+
 			}
 			else {
 				$('#' + requestId).html(symValues);
@@ -200,8 +219,6 @@ function quoteWatch() {
         });
 
     };
-
-}
 
 function quoteSnap() {
     var request = {
