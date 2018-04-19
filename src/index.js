@@ -221,7 +221,7 @@ function buildPanelGroup(symbol, label) {
     panelGroup += '<div class="symbolVal" id="last' + symbol + '"> </div>';
     // class="changbox val' + downUp + '"
     panelGroup += '<div id="change' + symbol + '"> </div>';
-    panelGroup += '<div><a href="#?id=' + symbol + '" class="linkDelete" onclick="deleteSymbol(' + "'" + symbol + "'" + ')">[X]</a></div>';
+    panelGroup += '<div><a href="#?id=' + symbol + '" class="linkDelete" draggable = "true" ondragstart="dragSymbol(event)" onclick="deleteSymbol(' + "'" + symbol + "'" + ')">[X]</a></div>';
     panelGroup += '</div>';
     panelGroup += '</div>';
     panelGroup += '<div id="collapse' + symbol + '" class="panel-collapse collapse in">';
@@ -275,6 +275,10 @@ function buildPanelGroup(symbol, label) {
     panelGroup += '</div>';
     $("#accordion" + label).append(panelGroup);
 
+}
+
+function dragSymbol(event) {
+    event.dataTransfer.setData("text", event.target.id);
 }
 
 function getSymbolData(symbol, label) {
