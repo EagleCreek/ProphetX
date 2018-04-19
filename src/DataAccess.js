@@ -105,7 +105,7 @@ function loginLookup(msg) {
 
     
 
-    // ... add here 
+    // ... add here
 	var localUserData = myStorage.getItem(uName);
     if (localUserData !== null) {
         myQuotes = JSON.parse(localUserData);
@@ -115,7 +115,7 @@ function loginLookup(msg) {
     }
     else {
         var userData = {
-            symbols: [{ symbol: '', requestId: requestID }]
+            symbols: [{ symbol: '', requestId: requestID, watch: false }]
             //symbols: [{ symbol: 'GOOG', requestId: 2 }, { symbol: '@ES@1', requestId: 3 }, { symbol: 'TWTR', requestId: 4 }]
 
         };
@@ -213,9 +213,11 @@ function quoteWatch() {
 		request.meta.requestId = item.requestId;
 		request.data.expression = item.symbol;
 		//console.log('Sent request ' + request.meta.requestId + ': ' + JSON.stringify(request));
-        if (item.symbol.length > 0) {
+        if (item.symbol != "") {
             WEBSOCKET.send(JSON.stringify(request));
-            WEBSOCKET.onmessage = parseQuotes(result);
+            WEBSOCKET.onmessage = function (event) {
+                parseQuotes(event);
+            };
         }
 	}
 

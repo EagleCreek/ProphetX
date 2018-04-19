@@ -155,14 +155,24 @@ function search() {
 // This function adds the selected symbol to the in memory list
 // TODO: commit to localStorage for retrevial. 
 function addQuote(symbol, description) {
+    var splitSymbol = symbol.split("@");
+    symbol = splitSymbol[1];
     var mySymbols = {};
     var uName = $('#uName').text();
     var localUserData = myStorage.getItem(uName);
     if (localUserData !== null) {
         myQuotes = JSON.parse(localUserData);
         if (myQuotes != null) {
+            var symbolSaved = false;
             //mySymbols = myQuotes.symbols;
-            var sym = [{ symbol: symbol , requestId: 1 }];
+            for (var i = 0; !symbolSaved & i < myQuotes.symbols.length; i++) {
+                symbolSaved = myQuotes.symbols[i].symbol = symbol;
+            }
+            if (!symbolSaved) {
+                var sym = [{ symbol: symbol , requestId: 1 , watch: false }];
+                myQuotes.symbols.push(sym);
+                myStorage.setItem(uName, JSON.stringify(myQuotes));
+            }
         }
     }
 
@@ -189,8 +199,7 @@ function addQuote(symbol, description) {
     };
 
     //Panel group
-    var splitSymbol = symbol.split("@");
-    symbol = splitSymbol[1];
+
 
     var symbolData = $("#" + symbol);
     if (!symbolData.length) {
@@ -368,6 +377,33 @@ function checkNull(symbol, event) {
     }
 }
 
+function unWatchSymbol(symbol) {
+    if (symbol.watch) {
+        var msg = {
+            meta: {
+                command: "Unwatch",
+                requestId: symbol.requestId
+            }
+        };
+        WEBSOCKET.send(JSON.stringify(msg));
+    }
+}
+
 function deleteSymbol(symbol) {
+    var mySymbols = {};
+    var uName = $('#uName').text();
+    var localUserData = myStorage.getItem(uName);
+    if (localUserData !== null) {
+        myQuotes = JSON.parse(localUserData);
+        if (myQuotes != null) {
+            var symbolFound = false;
+            for (var i = 0; !symbolFound & i < myQuotes.symbols.length; i++) {
+                symbolFound = (myQuotes.symbols[i].symbol = symbol);
+                if (symbolFound) {
+                    unWatchSymbol(myQuotes.symbols[i]);
+                }
+            }
+        }
+    }
     $("#" + symbol).remove();
 }
