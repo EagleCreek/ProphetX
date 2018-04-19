@@ -85,8 +85,26 @@ function onError(msg) {
     
 }
 
+function search(SearchTextValue) {
+    SearchTextValue = $("#searchText").val()
+    if (SearchTextValue[0].toLocaleLowerCase() != "@") {
+        if (SearchTextValue[0].toLocaleLowerCase() == "c") {
+            SearchTextValue = "@c`##";
+        }
+        if (SearchTextValue[0].toLocaleLowerCase() == "s") {
+            SearchTextValue = "@s`##";
+        }
+        if (SearchTextValue[0].toLocaleLowerCase() == "w") {
+            SearchTextValue = "@w`##";
+        }
+        if (SearchTextValue[0].toLocaleLowerCase() == "m") {
+            SearchTextValue = "@mw`##";
+        }
+    }
+    searchDisplay(SearchTextValue);
+}
 
-function search() {
+function searchDisplay(SearchTextValue) {
 
     //WEBSOCKET.onopen = onOpen;
     var CZ17Show = "~";
@@ -98,8 +116,8 @@ function search() {
         },
         data: {
             //A search for all corn ("@c`##")
-            sympat: $("#searchText").val(),
-            limit: 10
+            sympat: SearchTextValue,
+            limit: 100
         }
     };
     WEBSOCKET.send(JSON.stringify(msg));
@@ -179,27 +197,27 @@ function addQuote(symbol, description) {
 
     //Get the label from description(Split function).
     var splitDescription = description.split(" ");
-    var label = "";
+    var labelOrg = "";
     for (var i = 0; i < splitDescription.length - 2; i++) {
-        label += splitDescription[i];
-        label += " ";
+        labelOrg += splitDescription[i];
+        labelOrg += " ";
     };
-    label = label.trim();
+    labelOrg = labelOrg.trim();
+    label = labelOrg.replace(/ /g, "_");
     //console.log(label);
 
     //Determine if label is already on page if not add it.
     var sectionLabel = $("#" + label);
     if (!sectionLabel.length) {
         var section = '<section id="' + label + '">';
-        section += '<h4>' + label + '</h4>';
+        section += '<h4>' + labelOrg + '</h4>';
         section += '<div class="panel-group" id="accordion' + label + '">';
         section += '</div>';
-        section += '</section>'; 
+        section += '</section>';
         $("#quoteList").append(section);
     };
 
     //Panel group
-
 
     var symbolData = $("#" + symbol);
     if (!symbolData.length) {
