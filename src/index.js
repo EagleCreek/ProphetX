@@ -210,7 +210,7 @@ function buildPanelGroup(symbol, label) {
     panelGroup += '<div class="symbolData">';
     panelGroup += '<div class="symbolVal"> </div>';
     //panelGroup += '<div class="changbox val' + downUp + '""> </div>';
-    panelGroup += '<div><a href="#?id=' + symbol + '">[delete]</a></div>';
+    panelGroup += '<div><a href="#?id=' + symbol + '" class="linkDelete">[X]</a></div>';
     panelGroup += '</div>';
     panelGroup += '</div>';
     panelGroup += '<div id="collapse' + symbol + '" class="panel-collapse collapse in">';
@@ -229,7 +229,7 @@ function buildPanelGroup(symbol, label) {
     panelGroup += '<div class="symbolVal" id="last' + symbol + '"> </div>';
     // class="changbox val' + downUp + '"
     panelGroup += '<div id="change' + symbol + '"> </div>';
-    panelGroup += '<div><a href="#?id=' + symbol + '">[delete]</a></div>';
+    panelGroup += '<div><a href="#?id=' + symbol + '" class="linkDelete">[X]</a></div>';
     panelGroup += '</div>';
     panelGroup += '</div>';
     panelGroup += '<div id="collapse' + symbol + '" class="panel-collapse collapse in">';

@@ -10,8 +10,8 @@ function login() {
     var msg = {
         meta: { command: 'Login' },
         data: {
-            username: 'test@eaglecrk.com',
-            password: 'Dakota',
+            username: uname,// 'test@eaglecrk.com',
+            password: pwd,// 'Dakota',
             appname: 'WSP',
             version: '1.0.0.0',
         }
