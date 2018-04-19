@@ -2,6 +2,23 @@
 var myQuotes = [];
 var myStorage = window.localStorage;
 
+window.addEventListener("load", getLocalData, false);
+
+function getLocalData()
+{
+    if (myStorage.getItem("username") !== null) {
+		$('#username').val(myStorage.getItem("username"));
+    }
+	
+    if (myStorage.getItem("password") !== null) {
+		$('#password').val(myStorage.getItem("password"));
+    }
+	
+    if (myStorage.getItem("remember") !== null) {
+		$('#remember').prop('checked', myStorage.getItem("remember"));
+    }
+}
+
 function login() {
     var uname = $('#username').val();
     var pwd = $('#password').val();
@@ -56,6 +73,18 @@ function loginSuccessful(evt) {
 
 
 function loginLookup(msg) {
+
+	if ($('#remember').is(':checked')) {
+		myStorage.setItem("username", $('#username').val());
+		myStorage.setItem("password", $('#password').val());
+		myStorage.setItem("remember", $('#remember').is(':checked'));
+	}
+	else {
+		// reset localStorage
+		myStorage.removeItem("username");
+		myStorage.removeItem("password");
+		myStorage.removeItem("remember");
+	}
 // This hits the websocket for quote list data to be displayed on left
 
     var status = msg.meta.status;
@@ -66,8 +95,8 @@ function loginLookup(msg) {
     var uName = data[0].username;
     $('#uName').html(uName);
     
-    var welcom = "<h5>Welcome, " + infoMsg + "</h5>";
-    $('#msgWelcome').html(welcom);
+    var welcome = "<h5>Welcome, " + infoMsg + "</h5>";
+    $('#msgWelcome').html(welcome);
     $('#loginInfo').hide();
     $('#loggedIn').show();// Show the Logged In panel
     
