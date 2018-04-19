@@ -200,23 +200,6 @@ function addQuote(symbol, description) {
 }
 
 function buildPanelGroup(symbol, label) {
-    var panelGroup = '<div class="panel panel-default" id="' + symbol + '">';
-    panelGroup += '<div class="panel-heading">';
-    panelGroup += '<h4 class="panel-title">';
-    panelGroup += '<a class="accordion-toggle float-left" data-toggle="collapse" data-parent="#accordion" href="#collapse' + symbol + '">';
-    panelGroup += symbol + '[10]';
-    panelGroup += '</a>';
-    panelGroup += '</h4>';
-    panelGroup += '<div class="symbolData">';
-    panelGroup += '<div class="symbolVal"> </div>';
-    //panelGroup += '<div class="changbox val' + downUp + '""> </div>';
-    panelGroup += '<div><a href="#?id=' + symbol + '" class="linkDelete">[X]</a></div>';
-    panelGroup += '</div>';
-    panelGroup += '</div>';
-    panelGroup += '<div id="collapse' + symbol + '" class="panel-collapse collapse in">';
-    panelGroup += '<div class="panel-body">';
-    panelGroup += '<table class="table table-condensed">';
-    //Get information for label QuoteWatch (left blank returns all values) and ChartWatch.
 
     var panelGroup = '<div class="panel panel-default" id="' + symbol + '">';
     panelGroup += '<div class="panel-heading">';
@@ -229,7 +212,7 @@ function buildPanelGroup(symbol, label) {
     panelGroup += '<div class="symbolVal" id="last' + symbol + '"> </div>';
     // class="changbox val' + downUp + '"
     panelGroup += '<div id="change' + symbol + '"> </div>';
-    panelGroup += '<div><a href="#?id=' + symbol + '" class="linkDelete">[X]</a></div>';
+    panelGroup += '<div><a href="#?id=' + symbol + '" class="linkDelete" onclick="deleteSymbol(' + "'" + symbol + "'" + ')">[X]</a></div>';
     panelGroup += '</div>';
     panelGroup += '</div>';
     panelGroup += '<div id="collapse' + symbol + '" class="panel-collapse collapse in">';
@@ -383,4 +366,8 @@ function checkNull(symbol, event) {
     if (eventDataData[0].AskSize == null) {
         $("#askSize" + symbol).html("0");
     }
+}
+
+function deleteSymbol(symbol) {
+    $("#" + symbol).remove();
 }
