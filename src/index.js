@@ -211,7 +211,7 @@ function addQuote(symbol, description) {
     if (!sectionLabel.length) {
         var section = '<section id="' + label + '">';
         section += '<h4>' + labelOrg + '</h4>';
-        section += '<div class="panel-group" id="accordion' + label + '">';
+        section += '<div class="panel-group"  ondrop = "dropSymbol(event)" id="accordion' + label + '">';
         section += '</div>';
         section += '</section>';
         $("#quoteList").append(section);
@@ -228,7 +228,7 @@ function addQuote(symbol, description) {
 
 function buildPanelGroup(symbol, label) {
 
-    var panelGroup = '<div class="panel panel-default" id="' + symbol + '">';
+    var panelGroup = '<div class="panel panel-default"  draggable = "true"  ondragover = "allowDropSymbol(event)" ondragstart = "dragSymbol(event)" id="' + symbol + '">';
     panelGroup += '<div class="panel-heading">';
     panelGroup += '<h4 class="panel-title">';
     panelGroup += '<a class="accordion-toggle float-left" data-toggle="collapse" data-parent="#accordion" href="#collapse' + symbol + '">';
@@ -239,7 +239,7 @@ function buildPanelGroup(symbol, label) {
     panelGroup += '<div class="symbolVal" id="last' + symbol + '"> </div>';
     // class="changbox val' + downUp + '"
     panelGroup += '<div id="change' + symbol + '"> </div>';
-    panelGroup += '<div><a href="#?id=' + symbol + '" class="linkDelete" draggable = "true" ondragstart="dragSymbol(event)" onclick="deleteSymbol(' + "'" + symbol + "'" + ')">[X]</a></div>';
+    panelGroup += '<div><a href="#?id=' + symbol + '" class="linkDelete" onclick="deleteSymbol(' + "'" + symbol + "'" + ')">[X]</a></div>';
     panelGroup += '</div>';
     panelGroup += '</div>';
     panelGroup += '<div id="collapse' + symbol + '" class="panel-collapse collapse in">';
@@ -295,8 +295,18 @@ function buildPanelGroup(symbol, label) {
 
 }
 
+function dropSymbol(event) {
+    event.preventDefault();
+    var data = event.dataTransfer.getData("text");
+    var dropTarget = $("#" + data);
+    event.target.appendChild(dropTarget);
+}
 function dragSymbol(event) {
     event.dataTransfer.setData("text", event.target.id);
+}
+
+function allowDropSymbol(event) {
+    event.preventDefault();
 }
 
 function getSymbolData(symbol, label) {
