@@ -5,6 +5,7 @@
 //WEBSOCKET.onmessage = onMessage;
 //WEBSOCKET.onerror = onError;
 var requestID = 1;
+var sourceDND;
 
 //function onOpen(evt) {
 //    //alert('Sending login message on opened connection');
@@ -211,7 +212,7 @@ function addQuote(symbol, description) {
     if (!sectionLabel.length) {
         var section = '<section id="' + label + '">';
         section += '<h4>' + labelOrg + '</h4>';
-        section += '<div class="panel-group"  ondrop = "dropSymbol(event)" id="accordion' + label + '">';
+        section += '<div class="panel-group"  id="accordion' + label + '">';
         section += '</div>';
         section += '</section>';
         $("#quoteList").append(section);
@@ -228,7 +229,7 @@ function addQuote(symbol, description) {
 
 function buildPanelGroup(symbol, label) {
 
-    var panelGroup = '<div class="panel panel-default"  draggable = "true"  ondragover = "allowDropSymbol(event)" ondragstart = "dragSymbol(event)" id="' + symbol + '">';
+    var panelGroup = '<div class="panel panel-default"  draggable = "true"   ondrop = "dropSymbol(event)" ondragover = "allowDropSymbol(event)" ondragstart = "dragSymbol(event)" id="' + symbol + '">';
     panelGroup += '<div class="panel-heading">';
     panelGroup += '<h4 class="panel-title">';
     panelGroup += '<a class="accordion-toggle float-left" data-toggle="collapse" data-parent="#accordion" href="#collapse' + symbol + '">';
@@ -297,16 +298,29 @@ function buildPanelGroup(symbol, label) {
 
 function dropSymbol(event) {
     event.preventDefault();
-    var data = event.dataTransfer.getData("text");
-    var dropTarget = $("#" + data);
-    event.target.appendChild(dropTarget);
+    var data = event.dataTransfer.getData("text/plain");
+    event.currentTarget.parentElement.insertBefore( $("#" + data)[0], event.currentTarget.nextSibling);
 }
 function dragSymbol(event) {
-    event.dataTransfer.setData("text", event.target.id);
+    event.dataTransfer.setData("text/plain", event.target.id);
+    sourceDND = event.dataTransfer.getData("text/plain");
 }
 
 function allowDropSymbol(event) {
-    event.preventDefault();
+    // Don't allow drop on the source
+    if (event.currentTarget.id != sourceDND) {
+        // Get a reference to the parent of the drop target
+        var dropParent = $("#" + event.currentTarget.id).parent()[0].id;
+        // Get a reference to the parent of the drag object
+        var sourceParent = $("#" + sourceDND).parent()[0].id;
+        // Compare the parents
+        if (sourceParent == dropParent) {
+             // If the same then allow the drop
+             event.preventDefault();
+        }
+    }
+    // Else don't allow the drop
+
 }
 
 function getSymbolData(symbol, label) {
