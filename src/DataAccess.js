@@ -1,6 +1,8 @@
 ﻿WEBSOCKET = new WebSocket('wss://ProphetX14.dtn.com/cs/1.0');
 var myQuotes = [];
 var myStorage = window.localStorage;
+//myStorage.removeItem("wharrison@eaglecrk.com");
+//myStorage.clear();
 
 window.addEventListener("load", getLocalData, false);
 
