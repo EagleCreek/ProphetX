@@ -113,11 +113,11 @@ function loginLookup(msg) {
             quoteWatch();
         }
     }
-    else {
+   /* else {
         var userData = [{symbol: '', description: '', requestId: 0, watch: false}];
         myStorage.setItem(uName, JSON.stringify(userData));
         myQuotes = JSON.parse(myStorage.getItem(uName));
-    }
+    }*/
 
     //chartSnap();
     //symbolSearch();

@@ -197,6 +197,11 @@ function addQuote(symbol, description) {
             }
         }
     }
+	else {
+		var sym = { symbol: fullSymbol, description: description, requestId: requestID , watch: false };
+		myQuotes.push(sym);
+		myStorage.setItem(uName, JSON.stringify(myQuotes));
+	}
 
 
     //Get the label from description(Split function).
