@@ -114,11 +114,7 @@ function loginLookup(msg) {
         }
     }
     else {
-        var userData = {
-            symbols: [{ symbol: '', requestId: requestID, watch: false }]
-            //symbols: [{ symbol: 'GOOG', requestId: 2 }, { symbol: '@ES@1', requestId: 3 }, { symbol: 'TWTR', requestId: 4 }]
-
-        };
+        var userData = [{symbol: '', description: '', requestId: 0, watch: false}];
         myStorage.setItem(uName, JSON.stringify(userData));
         myQuotes = JSON.parse(myStorage.getItem(uName));
     }
@@ -190,7 +186,11 @@ function symbolSearch() {
 
 function quoteWatch() {
 
-    var request = {
+	for (var i = 0; i < myQuotes.length; i++) {
+		addQuote(myQuotes[i].symbol, myQuotes[i].description);
+	}
+
+    /*var request = {
         meta: {
             command: "QuoteWatch",
             requestId: 6
@@ -219,13 +219,13 @@ function quoteWatch() {
                 parseQuotes(event);
             };
         }
-	}
+	}*/
 
 
 
 }
 
-    function parseQuotes(result) {
+    /*function parseQuotes(result) {
     
         // loop through results and display
 		var data = JSON.parse(result.data);
@@ -249,7 +249,7 @@ function quoteWatch() {
 			console.log(symValues);
         });
 
-    };
+    };*/
 
 function quoteSnap() {
     var request = {
