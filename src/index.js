@@ -174,6 +174,7 @@ function searchDisplay(SearchTextValue) {
 // This function adds the selected symbol to the in memory list
 // TODO: commit to localStorage for retrevial. 
 function addQuote(symbol, description) {
+	var fullSymbol = symbol;
     var splitSymbol = symbol.split("@");
     symbol = splitSymbol[1];
     var mySymbols = {};
@@ -184,16 +185,24 @@ function addQuote(symbol, description) {
         if (myQuotes != null) {
             var symbolSaved = false;
             //mySymbols = myQuotes.symbols;
-            for (var i = 0; !symbolSaved & i < myQuotes.symbols.length; i++) {
-                symbolSaved = myQuotes.symbols[i].symbol = symbol;
+            for (var i = 0; !symbolSaved & i < myQuotes.length; i++) {
+                symbolSaved = myQuotes[i].symbol == fullSymbol;
+				if(symbolSaved) {
+					break;
+				}
             }
             if (!symbolSaved) {
-                var sym = [{ symbol: symbol , requestId: 1 , watch: false }];
-                myQuotes.symbols.push(sym);
+                var sym = { symbol: fullSymbol, description: description, requestId: requestID , watch: false };
+                myQuotes.push(sym);
                 myStorage.setItem(uName, JSON.stringify(myQuotes));
             }
         }
     }
+	else {
+		var sym = { symbol: fullSymbol, description: description, requestId: requestID , watch: false };
+		myQuotes.push(sym);
+		myStorage.setItem(uName, JSON.stringify(myQuotes));
+	}
 
 
     //Get the label from description(Split function).
@@ -356,28 +365,30 @@ function getSymbolData(symbol, label) {
 
         var eventData = event.data;
         var eventDataData = JSON.parse(eventData).data;
-        $("#change" + symbol).html(eventDataData[0].Change);
-        $("#last" + symbol).html(eventDataData[0].Last);
-        $("#high" + symbol).html(eventDataData[0].High);
-        $("#volume" + symbol).html(eventDataData[0].Volume);
-        $("#low" + symbol).html(eventDataData[0].Low);
-        $("#openInt" + symbol).html(eventDataData[0].OpenInterest);
-        $("#open" + symbol).html(eventDataData[0].Open);
-        $("#vlty" + symbol).html(parseFloat(eventDataData[0].Volatility).toFixed(4).toString());
-        $("#bid" + symbol).html(eventDataData[0].Bid);
-        $("#bidSize" + symbol).html(eventDataData[0].BidSize);
-        $("#ask" + symbol).html(eventDataData[0].Ask);
-        $("#askSize" + symbol).html(eventDataData[0].AskSize);
-        checkNull(symbol, event);
+		var eventDataMeta = JSON.parse(eventData).meta;
+		var sym = eventDataMeta.expression.substring(1);
+        $("#change" + sym).html(eventDataData[0].Change);
+        $("#last" + sym).html(eventDataData[0].Last);
+        $("#high" + sym).html(eventDataData[0].High);
+        $("#volume" + sym).html(eventDataData[0].Volume);
+        $("#low" + sym).html(eventDataData[0].Low);
+        $("#openInt" + sym).html(eventDataData[0].OpenInterest);
+        $("#open" + sym).html(eventDataData[0].Open);
+        $("#vlty" + sym).html(parseFloat(eventDataData[0].Volatility).toFixed(4).toString());
+        $("#bid" + sym).html(eventDataData[0].Bid);
+        $("#bidSize" + sym).html(eventDataData[0].BidSize);
+        $("#ask" + sym).html(eventDataData[0].Ask);
+        $("#askSize" + sym).html(eventDataData[0].AskSize);
+        checkNull(sym, event);
 
         var change = (eventDataData[0].Change);
         var check = change[0];
         if (check == "-") {
             var downUp = "Dn"
-            $('#change' + symbol).addClass('changbox val' + downUp);
+            $('#change' + sym).addClass('changbox val' + downUp);
         } else {
             var downUp = "Up"
-            $('#change' + symbol).addClass('changbox val' + downUp);
+            $('#change' + sym).addClass('changbox val' + downUp);
         }
     };
 };
