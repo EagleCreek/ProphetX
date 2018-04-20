@@ -422,6 +422,9 @@ function unWatchSymbol(symbol) {
 }
 
 function deleteSymbol(symbol) {
+    // Delete the symbol
+    $("#" + symbol).remove();
+    // Get the saved information
     var mySymbols = {};
     var uName = $('#uName').text();
     var localUserData = myStorage.getItem(uName);
@@ -429,13 +432,18 @@ function deleteSymbol(symbol) {
         myQuotes = JSON.parse(localUserData);
         if (myQuotes != null) {
             var symbolFound = false;
+            // Find the symbol that is being removed
             for (var i = 0; !symbolFound & i < myQuotes.symbols.length; i++) {
                 symbolFound = (myQuotes.symbols[i].symbol = symbol);
                 if (symbolFound) {
+                    // Unwatch the symbol
                     unWatchSymbol(myQuotes.symbols[i]);
+                    // Remove the symbol
+                    myQuotes.symbols.splice(i, 1);
+                    // Save the information
+                    myStorage.setItem(uName, JSON.stringify(myQuotes));
                 }
             }
         }
     }
-    $("#" + symbol).remove();
 }
