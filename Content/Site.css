@@ -17,6 +17,7 @@ body {
 
 }
 .panel-default { border: 0px !important; }
+
 .panel-heading {
     background-color: #2c2c2c !important;
     color: #fff !important;
@@ -91,4 +92,31 @@ body {
     content: "\e080"; /* adjust as needed, taken from bootstrap.css */
 }
 
+
+
+
+    /* checkbox icons */
+    input[type='checkbox'].pseudo-checkbox + label:before,
+    input[type='checkbox'].pseudo-checkbox + label:after {
+        position: relative;
+        top: 1px;
+        display: inline-block;
+        font-family: 'Glyphicons Halflings';
+        font-style: normal;
+        font-weight: 400;
+        line-height: 1;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    input[type='checkbox'].pseudo-checkbox + label:before { /*unchecked icon*/
+        content: "\e157";
+        font-size: 1.3em;
+    }
+
+input[type='checkbox']:checked.pseudo-checkbox + label:before { /*checked icon*/
+    content: "\e067";
+    font-size: 1.3em;
+    color: lawngreen;
+}
 

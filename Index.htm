@@ -98,18 +98,24 @@
                         <section>
                             <label>Username</label>
                             <div class="panel-group">
-                                <input id="username" class="form-control" type="text" maxlength="50"/>
+                            <div class="form-group">
+                                <input id="username" class="form-control" type="text" maxlength="50" placeholder="50 characters max"/>
+                                </div>
                             </div>
                             <label>Password</label>
                             <div class="panel-group">
-                                <input id="password" class="form-control" type="password" maxlength="50"/>
+                            <div class="form-group">
+                                <input id="password" class="form-control" type="password" maxlength="50" placeholder="50 characters max"/>
+                                </div>
                             </div>
                             <div class="checkbox">
-                                <label><input id="remember" type="checkbox">Remember Password</label>
+                                <input type='checkbox' id='remember' class='pseudo-checkbox sr-only'/>
+                                <label for='remember'> Remember Me!</label>
+                                <!--<label><input id="remember" type="checkbox" > Remember Password</label>-->
                             </div>
                         </section>
                         <input id="loginButton" class="btn btn-default" value="Login" type="button" onclick="login()">
-                        <br>
+                        <br />
                         <label></label>
                         <div id="loginError"></div>
                     </form>
@@ -118,9 +124,8 @@
                 <div id="loggedIn" style="display: none;">
                     <div id="msgWelcome"></div>
                     <div id="uName" style="display: none;"></div>
-                    <div id="version"></div>
-
                     <input type="button" class="btn btn-primary btn-sm" value="Logout" onclick="logout();"/>
+                    <p class="small"><div id="version"></div></p>
 
                 </div>
 
