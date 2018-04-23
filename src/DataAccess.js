@@ -127,14 +127,16 @@ function loginLookup(msg) {
 
 }
 
-
 function logout() {
     $('#loginInfo').show();
     $('#loggedIn').hide();
+    if (WEBSOCKET !== null) {
+        WEBSOCKET.close(1000, "Reconnect");
+        WEBSOCKET = null;
+    }
+    WEBSOCKET = new WebSocket('wss://ProphetX14.dtn.com/cs/1.0');
+    $("#quoteList").empty();
 }
-
-
-
 
 function symbolSearch() {
     var request = {
