@@ -6,7 +6,7 @@
 //WEBSOCKET.onerror = onError;
 var requestID = 1;
 var sourceDND;
-var symbolLimit = 10;
+var symbolLimit = 100;
 
 //function onOpen(evt) {
 //    //alert('Sending login message on opened connection');
