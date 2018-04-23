@@ -440,19 +440,21 @@ function getSymbolData(symbol, label) {
             myStorage.setItem(uName, JSON.stringify(myQuotes));
         }
 		console.log(sym);
-        $("#change" + sym).html(eventDataData[0].Change);
-        $("#last" + sym).html(eventDataData[0].Last);
-        $("#high" + sym).html(eventDataData[0].High);
-        $("#volume" + sym).html(eventDataData[0].Volume);
-        $("#low" + sym).html(eventDataData[0].Low);
-        $("#openInt" + sym).html(eventDataData[0].OpenInterest);
-        $("#open" + sym).html(eventDataData[0].Open);
-        $("#vlty" + sym).html(parseFloat(eventDataData[0].Volatility).toFixed(4).toString());
-        $("#bid" + sym).html(eventDataData[0].Bid);
-        $("#bidSize" + sym).html(eventDataData[0].BidSize);
-        $("#ask" + sym).html(eventDataData[0].Ask);
-        $("#askSize" + sym).html(eventDataData[0].AskSize);
-        checkNull(sym, event);
+		// eventDataDate[0].change ? 0 : 1;
+
+        setValue("#change" + sym, eventDataData[0].Change);
+        setValue("#last" + sym, eventDataData[0].Last);
+        setValue("#high" + sym, eventDataData[0].High);
+        setValue("#volume" + sym, eventDataData[0].Volume);
+        setValue("#low" + sym, eventDataData[0].Low);
+        setValue("#openInt" + sym, eventDataData[0].OpenInterest);
+        setValue("#open" + sym, eventDataData[0].Open);
+        setValue("#vlty" + sym, parseFloat(eventDataData[0].Volatility).toFixed(4).toString());
+        setValue("#bid" + sym, eventDataData[0].Bid);
+        setValue("#bidSize" + sym, eventDataData[0].BidSize);
+        setValue("#ask" + sym, eventDataData[0].Ask);
+        setValue("#askSize" + sym, eventDataData[0].AskSize);
+ //       checkNull(sym, event);
 
         var change = (eventDataData[0].Change);
         var check = change[0];
@@ -466,6 +468,11 @@ function getSymbolData(symbol, label) {
     };
 };
 
+function setValue(fieldId, value) {
+    if (typeof value != undefined) {
+        $(fieldId).html((value == null? 0 : value));
+    }
+}
 function checkNull(symbol, event) {
     var eventData = event.data;
     var eventDataData = JSON.parse(eventData).data;
