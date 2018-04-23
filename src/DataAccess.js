@@ -136,6 +136,10 @@ function logout() {
     }
     WEBSOCKET = new WebSocket('wss://ProphetX14.dtn.com/cs/1.0');
     $("#quoteList").empty();
+	if (!$('#remember').is(':checked')) {
+		$('#username').val('');
+		$('#password').val('');
+	}
 }
 
 function symbolSearch() {
