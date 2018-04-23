@@ -196,13 +196,15 @@ function addQuote(symbol, description) {
             if (!symbolSaved) {
                 var sym = { symbol: fullSymbol, description: description, requestId: requestID , watch: false };
                 myQuotes.push(sym);
+                //myQuotes.symbols = sym;
                 myStorage.setItem(uName, JSON.stringify(myQuotes));
             }
         }
     }
 	else {
 		var sym = { symbol: fullSymbol, description: description, requestId: requestID , watch: false };
-		myQuotes.push(sym);
+	myQuotes.push(sym);
+        //myQuotes.symbols = sym;
 		myStorage.setItem(uName, JSON.stringify(myQuotes));
 	}
 
@@ -265,7 +267,9 @@ function buildPanelGroup(symbol, label) {
     panelGroup += '<div><a href="#?id=' + symbol + '" class="linkDelete" onclick="deleteSymbol(' + "'" + symbol + "'" + ')">[X]</a></div>';
     panelGroup += '</div>';
     panelGroup += '</div>';
-    panelGroup += '<div id="collapse' + symbol + '" class="panel-collapse collapse in">';
+    
+    panelGroup += '<div id="collapse' + symbol + '" class="panel-collapse collapse">';
+
     panelGroup += '<div class="panel-body">';
     panelGroup += '<table class="table table-condensed">';
     panelGroup += "<tr>";
@@ -474,6 +478,7 @@ function setValue(fieldId, value) {
     }
 }
 function checkNull(symbol, event) {
+  
     var eventData = event.data;
     var eventDataData = JSON.parse(eventData).data;
     if (eventDataData[0].Change == null) {

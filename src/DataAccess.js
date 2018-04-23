@@ -61,6 +61,12 @@ function loginSuccessful(evt) {
                     errMsg += "<b>" + code + " </b> ";
                     errMsg += detail;
                     $('#loginError').html(errMsg);
+
+                    if (WEBSOCKET !== null) {
+                        WEBSOCKET.close(1000, "Reconnect");
+                        WEBSOCKET = null;
+                    }
+                    WEBSOCKET = new WebSocket('wss://ProphetX14.dtn.com/cs/1.0');
                 } else {
                      loginLookup(msg);// get myQuoteList from localStorage
                 }

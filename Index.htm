@@ -3,25 +3,28 @@
 <head>
     <title>ProphetX</title>
     <meta charset="utf-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link href="Content/themes/base/all.css" rel="stylesheet" />
-    <link href="Content/Site.css" rel="stylesheet" />
 
-    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
-    <!--<script src="https://unpkg.com/react@16/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>-->
-    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
-
+    <link href="content/themes/base/all.css" rel="stylesheet" />
+    <link href="content/site.css" rel="stylesheet" />
+    
     <script src="src/index.js"></script>
-    <script src="src/DataAccess.js"></script>
+    <script src="src/dataaccess.js"></script>
+
+    <!--<script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>-->
+    <!--<script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>-->
     
 </head>
 <body>
-
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -37,55 +40,55 @@
                     <li class="active"><a href="#">Home</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Log off? </a></li>
+                    <!--<li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Log off? </a></li>-->
                 </ul>
             </div>
         </div>
     </nav>
 
     <div class="container-fluid">
-
+        <!-- currently blank but could be leveraged for header details-->
         <div id="rowHeader" class="row">
             <div class="col-md-8">
                 <div id="header"></div>
             </div>
             <div class="col-md-4">
-                <div class="float-right"><< alert box >></div>
+                <div class="float-right"></div>
             </div>
         </div>
 
-
-
+        <!-- main bod of content -->
         <div id="rowBody" class="row">
 
             <div class="col-md-4">
-                <h4>Watch List</h4>
+                <section id="contentLeft">
+                    <h4>Watch List</h4>
 
-                <div id="quoteList"></div>
-                <!-- JavaScript adds rows here -->
-
-            </div>
-
-            <div class="col-md-4">
-                <h4>Symbol Search</h4>
-
-                <input type="text" class="form-control" id="searchText" 
-                       style="width: 240px; float: left;" placeholder="Search Symbol" />
-
-                <input type="button" class="btn btn-default" value="Search" onclick="search();" />
-
-                <table class="table table-condensed" id="searchResults">
-                    <tr><th>Symbol</th><th>Market</th><th>Price</th><th></th></tr>
+                    <div id="quoteList"></div>
                     <!-- JavaScript adds rows here -->
-                </table>
-                
-                <div id="searchError"></div>
+                </section>
             </div>
 
             <div class="col-md-4">
-                <h4>Charts, Graphs and More</h4>
-                <div id="dvDemo"></div>
+                <section id="contentCenter">
+                    <h4>Symbol Search</h4>
+
+                    <input type="text" class="form-control" id="searchText"
+                           style="width: 240px; float: left;" placeholder="Search Symbol"/>
+
+                    <input type="button" class="btn btn-default" value="Search" onclick="search();"/>
+
+                    <table class="table table-condensed" id="searchResults">
+                        <!-- JavaScript adds rows here -->
+                    </table>
+
+                    <div id="searchError"></div>
+                </section>
+            </div>
+
+            <div class="col-md-4">
+                <section id="contentRight">
 
                 <div id="loginInfo">
                     <p>
@@ -95,11 +98,11 @@
                         <section>
                             <label>Username</label>
                             <div class="panel-group">
-                                <input id="username" class="form-control" type="text" maxlength="50" />
+                                <input id="username" class="form-control" type="text" maxlength="50"/>
                             </div>
                             <label>Password</label>
                             <div class="panel-group">
-                                <input id="password" class="form-control" type="password" maxlength="50" />
+                                <input id="password" class="form-control" type="password" maxlength="50"/>
                             </div>
                             <div class="checkbox">
                                 <label><input id="remember" type="checkbox">Remember Password</label>
@@ -107,20 +110,21 @@
                         </section>
                         <input id="loginButton" class="btn btn-default" value="Login" type="button" onclick="login()">
                         <br>
-                        <label></label> 
+                        <label></label>
                         <div id="loginError"></div>
                     </form>
                 </div>
-                
+
                 <div id="loggedIn" style="display: none;">
                     <div id="msgWelcome"></div>
-                    <div id="uName"></div>
-                    
+                    <div id="uName" style="display: none;"></div>
+
                     <input type="button" class="btn btn-primary btn-sm" value="Logout" onclick="logout();"/>
 
                 </div>
 
                 <div id="messages"></div>
+                </section>
             </div>
 
         </div>
@@ -133,16 +137,14 @@
     <script type="text/javascript">
         // DOM Only and ready to add scripts.
         $(document).ready(function () {
-            console.log("document loaded");
-
-            // simple test to
-            //$('#dvDemo').html('Check');
+            //console.log("document loaded");
+            
         });
 
 
         // The whole window of everything.
         $(window).on("load", function () {
-            console.log("window loaded");
+            //console.log("window loaded");
         });
     </script>
 

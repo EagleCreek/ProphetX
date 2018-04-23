@@ -6,10 +6,7 @@ body {
     color: #fff;
 }
 
-#dvDemo {
-    /*border: 1px solid blue;*/
-}
-
+/* this style is for testing purposes only */
 .border {
     border: 1px solid red;
 }
@@ -32,6 +29,7 @@ body {
     background-color: #000;
     color: #fff !important;
 }
+
 .table > thead > tr > th,
 .table > tbody > tr > th,
 .table > tfoot > tr > th,
@@ -39,7 +37,9 @@ body {
 .table > tbody > tr > td,
 .table > tfoot > tr > td {
  border: 0 !important;}
+
 .table{ margin: 0 !important;}
+
 .symbolData {
     border: 1px solid #000;
     float: right;
@@ -53,6 +53,7 @@ body {
     letter-spacing: 1px;
     font-size: 1em !important;
 }
+
 .changbox {
     float: right;
     text-align: center;
@@ -69,7 +70,11 @@ body {
     .changbox.valUp {
         background-color: #2e875b;
     }
-
+.linkDelete {
+    color: #fff !important;
+    float: right;
+    margin-right: -64px;
+}
 
 .panel-body{ color: #000;}
 
