@@ -127,6 +127,9 @@ function searchDisplay(SearchTextValue) {
     var results = "";
     WEBSOCKET.onmessage = function (event) {
 
+        // Clear the search results
+        var searchResults = $("#searchResults");
+        searchResults.html("<tr><th>Symbol</th><th>Description</th><th></th></tr>");
         var eventData = event.data;
         //.replace(/(\r\n\t|\n|\r\t)/gm,"");;
         //console.log(eventData);
@@ -144,8 +147,6 @@ function searchDisplay(SearchTextValue) {
             $('#searchError').html("");// empty msg if any.
             //var eventDataData = data.data;
 
-            var searchResults = $("#searchResults");
-            searchResults.html("<tr><th>Symbol</th><th>Description</th><th></th></tr>");
             $.each(data.data, function (index, eventDataData) {
                 var tableRow = "<tr>";
                 tableRow += "<td>" + eventDataData.symbol + "</td>";
