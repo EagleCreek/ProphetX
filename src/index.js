@@ -335,22 +335,61 @@ function allowDropSymbol(event) {
         var dropParent = $("#" + event.currentTarget.id).parent()[0].id;
         // Get a reference to the parent of the drag object
         var sourceParent = $("#" + sourceDND).parent()[0].id;
+        console.log("Drop = " + dropParent);
+        console.log("Source = " + sourceParent);
         // Compare the parents
-        if (sourceParent == dropParent) {
+//        if (sourceParent == dropParent) {
              // If the same then allow the drop
              event.preventDefault();
-        }
+//        }
     }
     // Else don't allow the drop
 
 }
 
+function getSymbolRequestId(symbol) {
+    var requestId = null;
+    var uName = $('#uName').text();
+    var localUserData = myStorage.getItem(uName);
+    myQuotes = JSON.parse(localUserData);
+    var symbolFound = false;
+    //mySymbols = myQuotes.symbols;
+    for (var i = 0; !symbolFound & i < myQuotes.length; i++) {
+        var testSym = myQuotes[i].symbol.split("@")[1];
+        symbolFound = testSym == symbol;
+        if(symbolFound) {
+            requestId = myQuotes[i].requestId;
+            break;
+        }
+    }
+    return requestId;
+}
+
 function getSymbolData(symbol, label) {
     //WEBSOCKET.onopen = onOpen;
+    // Update the symbol list with the request ID that is being used
+    var uName = $('#uName').text();
+    var localUserData = myStorage.getItem(uName);
+    myQuotes = JSON.parse(localUserData);
+    var symbolFound = false;
+    //mySymbols = myQuotes.symbols;
+    for (var i = 0; !symbolFound & i < myQuotes.length; i++) {
+        var testSym = myQuotes[i].symbol.split("@")[1];
+        symbolFound = testSym == symbol;
+        if(symbolFound) {
+            myQuotes[i].requestId = requestID;
+            break;
+        }
+    }
+    if (symbolFound) {
+        myStorage.setItem(uName, JSON.stringify(myQuotes));
+    }
+
     var msg = {
         meta: {
-            command: "QuoteSnap",
-            requestId: requestID++
+            command: "QuoteWatch",
+            requestId: requestID++,
+            updateInterval: 1.0
         },
         data: {
             expression: "@"+symbol,
@@ -379,7 +418,28 @@ function getSymbolData(symbol, label) {
         var eventData = event.data;
         var eventDataData = JSON.parse(eventData).data;
 		var eventDataMeta = JSON.parse(eventData).meta;
-		var sym = eventDataMeta.expression.substring(1);
+		// Get the request ID from the meta data
+		var requestId = eventDataMeta.requestId;
+		// Get the saved symbol with the request ID
+		// Update the saved symbol setting watch to true
+		 var uName = $('#uName').text();
+        var localUserData = myStorage.getItem(uName);
+        myQuotes = JSON.parse(localUserData);
+        var symbolFound = false;
+        var sym = "";
+        //mySymbols = myQuotes.symbols;
+        for (var i = 0; !symbolFound & i < myQuotes.length; i++) {
+            symbolFound = myQuotes[i].requestId == requestId;
+            if(symbolFound) {
+                myQuotes[i].watch = true;
+                sym = myQuotes[i].symbol.split("@")[1];
+                break;
+            }
+        }
+        if (symbolFound) {
+            myStorage.setItem(uName, JSON.stringify(myQuotes));
+        }
+		console.log(sym);
         $("#change" + sym).html(eventDataData[0].Change);
         $("#last" + sym).html(eventDataData[0].Last);
         $("#high" + sym).html(eventDataData[0].High);
