@@ -107,6 +107,10 @@ function loginLookup(msg) {
     $('#msgWelcome').html(welcome);
     $('#loginInfo').hide();
     $('#loggedIn').show();// Show the Logged In panel
+
+    var eventData = event.data;
+    var eventDataData = JSON.parse(eventData).data;
+    $("#version").html("Version: " + eventDataData[0].wspVersion);
     
     
     // add to local store
