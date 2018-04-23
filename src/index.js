@@ -382,7 +382,7 @@ function getSymbolData(symbol, label) {
         symbolFound = testSym == symbol;
         if(symbolFound) {
             myQuotes[i].requestId = requestID;
-            break;
+ //           break;
         }
     }
     if (symbolFound) {
@@ -458,7 +458,6 @@ function getSymbolData(symbol, label) {
         setValue("#bidSize" + sym, eventDataData[0].BidSize);
         setValue("#ask" + sym, eventDataData[0].Ask);
         setValue("#askSize" + sym, eventDataData[0].AskSize);
- //       checkNull(sym, event);
 
         var change = (eventDataData[0].Change);
         var check = change[0];
@@ -477,47 +476,7 @@ function setValue(fieldId, value) {
         $(fieldId).html((value == null? 0 : value));
     }
 }
-function checkNull(symbol, event) {
-  
-    var eventData = event.data;
-    var eventDataData = JSON.parse(eventData).data;
-    if (eventDataData[0].Change == null) {
-        $("#change" + symbol).html("0");
-    }
-    if (eventDataData[0].Last == null) {
-        $("#last" + symbol).html("0");
-    }
-    if (eventDataData[0].High == null) {
-        $("#high" + symbol).html("0");
-    }
-    if (eventDataData[0].Volume == null) {
-        $("#volume" + symbol).html("0");
-    }
-    if (eventDataData[0].Low == null) {
-        $("#low" + symbol).html("0");
-    }
-    if (eventDataData[0].OpenInterest == null) {
-        $("#openInt" + symbol).html("0");
-    }
-    if (eventDataData[0].Open == null) {
-        $("#open" + symbol).html("0");
-    }
-    if (eventDataData[0].Volatility == null) {
-        $("#vlty" + symbol).html("0");
-    }
-    if (eventDataData[0].Bid == null) {
-        $("#bid" + symbol).html("0");
-    }
-    if (eventDataData[0].BidSize == null) {
-        $("#bidSize" + symbol).html("0");
-    }
-    if (eventDataData[0].Ask == null) {
-        $("#ask" + symbol).html("0");
-    }
-    if (eventDataData[0].AskSize == null) {
-        $("#askSize" + symbol).html("0");
-    }
-}
+
 
 function unWatchSymbol(symbol) {
     if (symbol.watch) {
