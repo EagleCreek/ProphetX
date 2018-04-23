@@ -6,6 +6,7 @@
 //WEBSOCKET.onerror = onError;
 var requestID = 1;
 var sourceDND;
+var symbolLimit = 10;
 
 //function onOpen(evt) {
 //    //alert('Sending login message on opened connection');
@@ -150,7 +151,7 @@ function searchDisplay(SearchTextValue) {
                 tableRow += "<td>" + eventDataData.symbol + "</td>";
                 tableRow += "<td>" + eventDataData.description + "</td>";
 
-                tableRow += '<td><button class="btn btn-sm btn-default" id="symbol1" value="Add" ';
+                tableRow += '<td><button class="btn btn-sm btn-default addBtn" id="symbol1" value="Add" ';
                 // TODO: we need to be consistent with our single and double quotes.
                 //tableRow += "<td><button class='btn btn-sm btn-default' id='symbol1' value='Add' ";
 
@@ -166,7 +167,7 @@ function searchDisplay(SearchTextValue) {
 
 
         }
-       
+       checkSymbolLimit();
     };
 }
 
@@ -234,6 +235,17 @@ function addQuote(symbol, description) {
         buildPanelGroup(symbol, label);
         getSymbolData(symbol, label);
     };
+	checkSymbolLimit();
+}
+
+function checkSymbolLimit() {
+
+	if(myQuotes.length >= symbolLimit) {
+		$('.addBtn').prop('disabled', true);
+	}
+	else {
+		$('.addBtn').prop('disabled', false);
+	}
 }
 
 function buildPanelGroup(symbol, label) {
@@ -458,17 +470,19 @@ function deleteSymbol(symbol) {
         if (myQuotes != null) {
             var symbolFound = false;
             // Find the symbol that is being removed
-            for (var i = 0; !symbolFound & i < myQuotes.symbols.length; i++) {
-                symbolFound = (myQuotes.symbols[i].symbol = symbol);
+            for (var i = 0; !symbolFound & i < myQuotes.length; i++) {
+				var splitSymbol = myQuotes[i].symbol.split("@");
+                symbolFound = (splitSymbol[1] == symbol);
                 if (symbolFound) {
                     // Unwatch the symbol
-                    unWatchSymbol(myQuotes.symbols[i]);
+                    unWatchSymbol(myQuotes[i]);
                     // Remove the symbol
-                    myQuotes.symbols.splice(i, 1);
+                    myQuotes.splice(i, 1);
                     // Save the information
                     myStorage.setItem(uName, JSON.stringify(myQuotes));
                 }
             }
         }
     }
+	checkSymbolLimit();
 }
