@@ -1,4 +1,7 @@
 ﻿WEBSOCKET = new WebSocket('wss://ProphetX14.dtn.com/cs/1.0');
+WEBSOCKET.onerror = function(evt) {
+	window.location.replace("error.htm");
+}
 var myQuotes = [];
 var myStorage = window.localStorage;
 //myStorage.removeItem("wharrison@eaglecrk.com");
