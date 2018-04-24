@@ -1,90 +1,13 @@
 ﻿
-//WEBSOCKET = new WebSocket('wss://ProphetX14.dtn.com/cs/1.0');
-//WEBSOCKET.onopen = onOpen;
-//WEBSOCKET.onclose = onClose;
-//WEBSOCKET.onmessage = onMessage;
-//WEBSOCKET.onerror = onError;
+// GLOBAL Variables. 
 var requestID = 1;
 var sourceDND;
 var symbolLimit = 100;
 
-//function onOpen(evt) {
-//    //alert('Sending login message on opened connection');
-//    // Send the login message
-//    console.log('Sending login message on opened connection');
-//    var msg = {
-//        meta: { command: 'Login' },
-//        data: {
-//            username: 'test@eaglecrk.com',
-//            password: 'Dakota',
-//            appname: 'testApp',
-//            version: '1.0.0.0',
-//        }
-//    };
-//    WEBSOCKET.send(JSON.stringify(msg));
-//}
 
-//function onMessage(evt) {
-//    var htmlOutput = "~";
-//    console.log('Received message: ' + evt.data);
-//    var msg = JSON.parse(evt.data);
-//    switch (msg.meta.command) {
-//    case 'Login':
-//        {
-//                onLogin(msg);
-                
-//                $.each(msg, function (index, i) {
-//                    if (index == 'data') {
-//                        $.each(msg.data, function (indexSecond, i) {
-//                            $('#header').html("Welcome, " + i.username);
-//                        });
-//                    }
-//                    htmlOutput += i.command + " ";
-//                    htmlOutput += i.status + " ";
-//                });
-//                $('#dvDemo').html(htmlOutput);
-//            break;
-//        }
-
-//    default:
-//        {
-//            break;
-//        }
-//    }
-//}
-
-//function onLogin(msg) {
-//    // Check if the login was successful
-//    if (msg.meta.status == 200) {
-//        console.log('Login successful');
-//        var request = {
-//            meta: {
-//                command: 'QuoteWatch',
-//                requestId: 1,
-//            },
-//            data: {
-//                expression: 'MSFT',
-//                fields: ['Last', 'Open', 'High', 'Low', 'Close', 'Settlement', 'TradeDateTime'],
-//                updateInterval: 0.5
-//            }
-//        };
-
-//        // Send one request for each test symbol
-//        //for (var i = 0; i < SYMBOLS.length; i++) {
-//        //    request.meta.requestId += 1;
-//        //    request.data.expression = SYMBOLS[i];
-//        //    console.log('Sent request ' + request.meta.requestId + ': ' + JSON.stringify(request));
-//        //    WEBSOCKET.send(JSON.stringify(request))
-//        //}
-//    }
-//    else {
-//        console.log('Login failed');
-//    }
-//}
-
-
+// Generic Error Handler 
 function onError(msg) {
-    
+    // TODO: Add 'general' error message functionality
 }
 
 function search(SearchTextValue) {
@@ -260,7 +183,7 @@ function buildPanelGroup(symbol, label) {
     panelGroup += symbol + '[10]';
     panelGroup += '</a>';
     panelGroup += '</h4>';
-    panelGroup += '<div class="symbolData">';
+    panelGroup += '<div class="changeInterval"><input type="text" class="iVal" /><a href="#" class="small">OK</a></div> <div class="symbolData">';
     panelGroup += '<div class="symbolVal" id="last' + symbol + '"> </div>';
     // class="changbox val' + downUp + '"
     panelGroup += '<div id="change' + symbol + '"> </div>';
