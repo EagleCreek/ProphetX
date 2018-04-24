@@ -92,7 +92,7 @@ function loginSuccessful(evt) {
                         WEBSOCKET = null;
                     }
 //                    WEBSOCKET = new WebSocket('wss://ProphetX14.dtn.com/cs/1.0');
-                     WEBSOCKET = createWebSocket();
+                     createWebSocket();
                 } else {
                      loginLookup(msg);// get myQuoteList from localStorage
                 }
@@ -170,7 +170,7 @@ function logout() {
         WEBSOCKET.close(1000, "Reconnect");
         WEBSOCKET = null;
     }
-    WEBSOCKET = createWebSocket();
+    createWebSocket();
 //    WEBSOCKET = new WebSocket('wss://ProphetX14.dtn.com/cs/1.0');
     $("#quoteList").empty();
 	if (!$('#remember').is(':checked')) {
