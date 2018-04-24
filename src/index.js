@@ -322,16 +322,24 @@ function buildPanelGroup(symbol, label) {
 
 }
 
+// Drop a symbol
 function dropSymbol(event) {
+    // Make sure the drop is allowed
     event.preventDefault();
+    // Get the ID of the dragged item
     var data = event.dataTransfer.getData("text/plain");
+    // Insert the dropped item after the target
     event.currentTarget.parentElement.insertBefore( $("#" + data)[0], event.currentTarget.nextSibling);
 }
+
+// Start a drag operation
 function dragSymbol(event) {
+    // Save the ID of the source for the drag
     event.dataTransfer.setData("text/plain", event.target.id);
     sourceDND = event.dataTransfer.getData("text/plain");
 }
 
+// Determine if drop should be allowed
 function allowDropSymbol(event) {
     // Don't allow drop on the source
     if (event.currentTarget.id != sourceDND) {
@@ -339,149 +347,170 @@ function allowDropSymbol(event) {
         var dropParent = $("#" + event.currentTarget.id).parent()[0].id;
         // Get a reference to the parent of the drag object
         var sourceParent = $("#" + sourceDND).parent()[0].id;
-        console.log("Drop = " + dropParent);
-        console.log("Source = " + sourceParent);
         // Compare the parents
-//        if (sourceParent == dropParent) {
+       if (sourceParent == dropParent) {
              // If the same then allow the drop
              event.preventDefault();
-//        }
+        }
     }
-    // Else don't allow the drop
-
 }
 
+// Get the saved request ID for a give symbol
 function getSymbolRequestId(symbol) {
+    // Default to null
     var requestId = null;
+    // Get the data from local stoarge
     var uName = $('#uName').text();
     var localUserData = myStorage.getItem(uName);
     myQuotes = JSON.parse(localUserData);
+    // Assume symbol not found
     var symbolFound = false;
-    //mySymbols = myQuotes.symbols;
+    // Process the symbols saved in local Storage
     for (var i = 0; !symbolFound & i < myQuotes.length; i++) {
+        // Parse the symbol
         var testSym = myQuotes[i].symbol.split("@")[1];
+        // Check if parsed symbol matches the input
         symbolFound = testSym == symbol;
         if(symbolFound) {
+            // Pull the request ID if symbol matches
             requestId = myQuotes[i].requestId;
             break;
         }
     }
+    // Return the request ID
     return requestId;
 }
 
+// Start watching the symbol and get the first set of data
 function getSymbolData(symbol, label) {
-    //WEBSOCKET.onopen = onOpen;
-    // Update the symbol list with the request ID that is being used
+    // Get the data from user storage
     var uName = $('#uName').text();
     var localUserData = myStorage.getItem(uName);
     myQuotes = JSON.parse(localUserData);
+    // Assume the symbol is not found
     var symbolFound = false;
-    //mySymbols = myQuotes.symbols;
+    // Process all symbols in the local storage
     for (var i = 0; !symbolFound & i < myQuotes.length; i++) {
+        // Parse ouf the symbol
         var testSym = myQuotes[i].symbol.split("@")[1];
+        // Compare the parsed symbol with th einput
         symbolFound = testSym == symbol;
         if(symbolFound) {
+            // Update the symbol list with the request ID that is being used
             myQuotes[i].requestId = requestID;
- //           break;
         }
     }
+    // If the symbol was found
     if (symbolFound) {
+        // Save the updated symbol
         myStorage.setItem(uName, JSON.stringify(myQuotes));
+        // Build the json for quotewatch
+        var msg = {
+            meta: {
+                command: "QuoteWatch",
+                requestId: requestID++,
+                updateInterval: 1.0
+            },
+            data: {
+                expression: "@"+symbol,
+                fields: ["Last",
+                    "Change",
+                    "High",
+                    "Low",
+                    "Open",
+                    "Bid",
+                    "Ask",
+                    "Volume",
+                    "OpenInterest",
+                    "Volatility",
+                    "BidSize",
+                    "AskSize",
+                ],
+                priceFormat: "text",
+                timeFormat: "text",
+                symbolFormat: "text",
+            }
+        };
+        // Send the request
+        WEBSOCKET.send(JSON.stringify(msg));
     }
-
-    var msg = {
-        meta: {
-            command: "QuoteWatch",
-            requestId: requestID++,
-            updateInterval: 1.0
-        },
-        data: {
-            expression: "@"+symbol,
-            fields: ["Last",
-                "Change",
-                "High",
-                "Low",
-                "Open",
-                "Bid",
-                "Ask",
-                "Volume",
-                "OpenInterest",
-                "Volatility",
-                "BidSize",
-                "AskSize",
-            ],
-            priceFormat: "text",
-            timeFormat: "text",
-            symbolFormat: "text",
-        }
-    };
-    WEBSOCKET.send(JSON.stringify(msg));
 
     WEBSOCKET.onmessage = function (event) {
-
+        // Get the data for the event
         var eventData = event.data;
+        // Get the data eleemnt in the response
         var eventDataData = JSON.parse(eventData).data;
+        // Get the meta element in the response
 		var eventDataMeta = JSON.parse(eventData).meta;
 		// Get the request ID from the meta data
 		var requestId = eventDataMeta.requestId;
-		// Get the saved symbol with the request ID
-		// Update the saved symbol setting watch to true
-		 var uName = $('#uName').text();
+		// Get the list of symbols being processed from local storage
+		var uName = $('#uName').text();
         var localUserData = myStorage.getItem(uName);
         myQuotes = JSON.parse(localUserData);
+        // Assume symbol not found
         var symbolFound = false;
         var sym = "";
-        //mySymbols = myQuotes.symbols;
+        // Process symbols that are in local storage until the correct one is foudn
         for (var i = 0; !symbolFound & i < myQuotes.length; i++) {
+            // Symbol is found if it matches the requestId
             symbolFound = myQuotes[i].requestId == requestId;
             if(symbolFound) {
+		        // Update the saved symbol setting watch to true
                 myQuotes[i].watch = true;
+                // Parse out the symbol we will use
                 sym = myQuotes[i].symbol.split("@")[1];
                 break;
             }
         }
+        // If the symbol was found and changed then save to local storage
         if (symbolFound) {
             myStorage.setItem(uName, JSON.stringify(myQuotes));
-        }
-		console.log(sym);
-		// eventDataDate[0].change ? 0 : 1;
+            // Process each field displayed for a symbol
+            setValue("#change" + sym, eventDataData[0].Change);
+            setValue("#last" + sym, eventDataData[0].Last);
+            setValue("#high" + sym, eventDataData[0].High);
+            setValue("#volume" + sym, eventDataData[0].Volume);
+            setValue("#low" + sym, eventDataData[0].Low);
+            setValue("#openInt" + sym, eventDataData[0].OpenInterest);
+            setValue("#open" + sym, eventDataData[0].Open);
+            setValue("#vlty" + sym, parseFloat(eventDataData[0].Volatility).toFixed(4).toString());
+            setValue("#bid" + sym, eventDataData[0].Bid);
+            setValue("#bidSize" + sym, eventDataData[0].BidSize);
+            setValue("#ask" + sym, eventDataData[0].Ask);
+            setValue("#askSize" + sym, eventDataData[0].AskSize);
 
-        setValue("#change" + sym, eventDataData[0].Change);
-        setValue("#last" + sym, eventDataData[0].Last);
-        setValue("#high" + sym, eventDataData[0].High);
-        setValue("#volume" + sym, eventDataData[0].Volume);
-        setValue("#low" + sym, eventDataData[0].Low);
-        setValue("#openInt" + sym, eventDataData[0].OpenInterest);
-        setValue("#open" + sym, eventDataData[0].Open);
-        setValue("#vlty" + sym, parseFloat(eventDataData[0].Volatility).toFixed(4).toString());
-        setValue("#bid" + sym, eventDataData[0].Bid);
-        setValue("#bidSize" + sym, eventDataData[0].BidSize);
-        setValue("#ask" + sym, eventDataData[0].Ask);
-        setValue("#askSize" + sym, eventDataData[0].AskSize);
-
-        var change = (eventDataData[0].Change);
-        if (typeof change != 'undefined') {
-            var check = change[0];
-            if (check == "-") {
-                var downUp = "Dn"
-                $('#change' + sym).addClass('changbox val' + downUp);
-            } else {
-                var downUp = "Up"
-                $('#change' + sym).addClass('changbox val' + downUp);
+            // Process the change values
+            var change = (eventDataData[0].Change);
+            // Only do it if the value is defined.
+            if (typeof change != 'undefined') {
+                var check = change[0];
+                if (check == "-") {
+                    var downUp = "Dn"
+                    $('#change' + sym).addClass('changbox val' + downUp);
+                } else {
+                    var downUp = "Up"
+                    $('#change' + sym).addClass('changbox val' + downUp);
+                }
             }
         }
     };
 };
 
+// Set a field value
 function setValue(fieldId, value) {
+    // Only set if undefined
     if (typeof value != 'undefined') {
+        // If the field is null then use 0, otherwise use the value
         $(fieldId).html((value == null? 0 : value));
     }
 }
 
-
+// Unwatch the specified symbol when watch is no longer needed.
 function unWatchSymbol(symbol) {
+    // If the symbol is current watched then we should unwatch it
     if (symbol.watch) {
+        // Build the unwatch json
         var msg = {
             meta: {
                 command: "Unwatch",
@@ -505,18 +534,39 @@ function deleteSymbol(symbol) {
             var symbolFound = false;
             // Find the symbol that is being removed
             for (var i = 0; !symbolFound & i < myQuotes.length; i++) {
+                // Use the symbol after the @ sign
 				var splitSymbol = myQuotes[i].symbol.split("@");
                 symbolFound = (splitSymbol[1] == symbol);
                 if (symbolFound) {
                     // Unwatch the symbol
                     unWatchSymbol(myQuotes[i]);
-                    // Remove the symbol
+                    // Remove the symbol from localData
                     myQuotes.splice(i, 1);
-                    // Save the information
+                    // Save the information in localDFate
                     myStorage.setItem(uName, JSON.stringify(myQuotes));
                 }
             }
         }
     }
 	checkSymbolLimit();
+}
+
+// Set the refresh rate for the given symbol
+function setRefreshRate(symbol) {
+    // Get the requestID for the sysmbol
+    var requestId = getSymbolRequestId(symbol);
+    // Get the refresh interval
+    var refreshInterval = 1;
+    // Create the ThrottleChange json
+     var msg = {
+        meta: {
+            command: "ThrottleChange",
+            requestId: requestId
+        },
+        data: {
+            updateInterval: refreshInterval
+        }
+    };
+    // Send the Throttle Change
+    WEBSOCKET.send(JSON.stringify(msg));
 }
