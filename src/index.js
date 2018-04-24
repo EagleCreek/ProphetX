@@ -460,7 +460,7 @@ function getSymbolData(symbol, label) {
         setValue("#askSize" + sym, eventDataData[0].AskSize);
 
         var change = (eventDataData[0].Change);
-        if (typeof change != undefined) {
+        if (typeof change != 'undefined') {
             var check = change[0];
             if (check == "-") {
                 var downUp = "Dn"
@@ -474,7 +474,7 @@ function getSymbolData(symbol, label) {
 };
 
 function setValue(fieldId, value) {
-    if (typeof value != undefined) {
+    if (typeof value != 'undefined') {
         $(fieldId).html((value == null? 0 : value));
     }
 }
