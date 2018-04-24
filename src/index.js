@@ -5,25 +5,22 @@ var sourceDND;
 var symbolLimit = 100;
 
 
+
 // Generic Error Handler 
 function onError(msg) {
     // TODO: Add 'general' error message functionality
 }
 
-function search(SearchTextValue) {
-    SearchTextValue = $("#searchText").val();
-    if (SearchTextValue[0] != "@") {
-        SearchTextValue = "@" + $("#searchText").val();
+function search() {
+    var searchTextValue = $("#searchText").val();
+    if (searchTextValue[0] !== "@") {
+        searchTextValue = "@" + $("#searchText").val();
     }
-    SearchTextValue += "`##";
-    searchDisplay(SearchTextValue);
+    searchTextValue += "`##";
+    searchDisplay(searchTextValue);
 }
 
-function searchDisplay(SearchTextValue) {
-
-    //WEBSOCKET = new WebSocket('wss://ProphetX14.dtn.com/cs/1.0');
-    var CZ17Show = "~";
-    var symbols = $('#searchText').val();
+function searchDisplay(searchTextValue) {
     var msg = {
         meta: {
             command: "SymbolSearch",
@@ -31,13 +28,14 @@ function searchDisplay(SearchTextValue) {
         },
         data: {
             //A search for all corn ("@c`##")
-            sympat: SearchTextValue,
+            sympat: searchTextValue,
             limit: 100
         }
     };
     WEBSOCKET.send(JSON.stringify(msg));
 }
-//   var results = "";
+
+
     function handleSymbolSearch(event) {
 
         // Clear the search results
@@ -86,12 +84,12 @@ function searchDisplay(SearchTextValue) {
 
 
 // This function adds the selected symbol to the in memory list
-// TODO: commit to localStorage for retrevial. 
+// NOTE: myQuotes is a Global Variable
 function addQuote(symbol, description) {
 	var fullSymbol = symbol;
     var splitSymbol = symbol.split("@");
     symbol = splitSymbol[1];
-    var mySymbols = {};
+    
     var uName = $('#uName').text();
     var localUserData = myStorage.getItem(uName);
     if (localUserData !== null) {
@@ -100,23 +98,21 @@ function addQuote(symbol, description) {
             var symbolSaved = false;
             //mySymbols = myQuotes.symbols;
             for (var i = 0; !symbolSaved & i < myQuotes.length; i++) {
-                symbolSaved = myQuotes[i].symbol == fullSymbol;
+                symbolSaved = myQuotes[i].symbol === fullSymbol;
 				if(symbolSaved) {
 					break;
 				}
             }
             if (!symbolSaved) {
-                var sym = { symbol: fullSymbol, description: description, requestId: requestID , watch: false };
-                myQuotes.push(sym);
-                //myQuotes.symbols = sym;
+                var sym1 = { symbol: fullSymbol, description: description, requestId: requestID , watch: false };
+                myQuotes.push(sym1);
                 myStorage.setItem(uName, JSON.stringify(myQuotes));
             }
         }
     }
 	else {
-		var sym = { symbol: fullSymbol, description: description, requestId: requestID , watch: false };
-	myQuotes.push(sym);
-        //myQuotes.symbols = sym;
+        var sym2 = { symbol: fullSymbol, description: description, requestId: requestID, watch: false };
+        myQuotes.push(sym2);
 		myStorage.setItem(uName, JSON.stringify(myQuotes));
 	}
 
@@ -125,19 +121,18 @@ function addQuote(symbol, description) {
     var splitDescription = description.split(" ");
     var labelOrg = "";
     //Removes # from cotton so it works in the search
-    for (var i = 0; i < splitDescription.length; i++) {
-        if (splitDescription[i].indexOf('#') != -1) {
+    for (var ii = 0; ii < splitDescription.length; ii++) {
+        if (splitDescription[ii].indexOf("#") !== -1) {
             splitDescription.splice(3);
         }
     }
 
-    for (var i = 0; i < splitDescription.length - 2; i++) {
-        labelOrg += splitDescription[i];
+    for (var i1 = 0; i1 < splitDescription.length - 2; i1++) {
+        labelOrg += splitDescription[i1];
         labelOrg += " ";
     };
     labelOrg = labelOrg.trim();
     label = labelOrg.replace(/ /g, "_");
-    //console.log(label);
 
     //Determine if label is already on page if not add it.
     var sectionLabel = $("#" + label);
@@ -179,11 +174,11 @@ function buildPanelGroup(symbol, label) {
     panelGroup += symbol + '[10]';
     panelGroup += '</a>';
     panelGroup += '</h4>';
-    panelGroup += '<div class="changeInterval"><input type="text" class="iVal" id="refresh' + symbol + '" /><a href="#" class="small" onclick="setRefreshRate(' + "'" + symbol + "'" + ')">OK</a></div> <div class="symbolData">';
+    panelGroup += '<div class="changeInterval"><input type="text" class="iVal" value="1" id="refresh' + symbol + '" /><a href="#" class="small" onclick="setRefreshRate(' + "'" + symbol + "'" + ')" data-toggle="tooltip" data-placement="top" title="Update Interval">OK</a></div> <div class="symbolData">';
     panelGroup += '<div class="symbolVal" id="last' + symbol + '"> </div>';
     // class="changbox val' + downUp + '"
     panelGroup += '<div id="change' + symbol + '"> </div>';
-    panelGroup += '<div><a href="#?id=' + symbol + '" class="linkDelete" onclick="deleteSymbol(' + "'" + symbol + "'" + ')">[X]</a></div>';
+    panelGroup += '<div><a href="#?id=' + symbol + '" class="linkDelete" onclick="deleteSymbol(' + "'" + symbol + "'" + ')" data-toggle="tooltip" data-placement="top" title="Remove Symbol">[X]</a></div>';
     panelGroup += '</div>';
     panelGroup += '</div>';
     
