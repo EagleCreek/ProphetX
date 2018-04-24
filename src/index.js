@@ -460,13 +460,15 @@ function getSymbolData(symbol, label) {
         setValue("#askSize" + sym, eventDataData[0].AskSize);
 
         var change = (eventDataData[0].Change);
-        var check = change[0];
-        if (check == "-") {
-            var downUp = "Dn"
-            $('#change' + sym).addClass('changbox val' + downUp);
-        } else {
-            var downUp = "Up"
-            $('#change' + sym).addClass('changbox val' + downUp);
+        if (typeof change != undefined) {
+            var check = change[0];
+            if (check == "-") {
+                var downUp = "Dn"
+                $('#change' + sym).addClass('changbox val' + downUp);
+            } else {
+                var downUp = "Up"
+                $('#change' + sym).addClass('changbox val' + downUp);
+            }
         }
     };
 };
