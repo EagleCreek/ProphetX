@@ -442,6 +442,7 @@ function getSymbolData(symbol, label) {
                 }
             }
         }
+        }
     };
 
     // Set a field value
