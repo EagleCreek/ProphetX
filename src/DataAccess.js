@@ -46,6 +46,8 @@ function login() {
 
 
 function loginSuccessful(evt) {
+	$('#contentLeft').show();
+	$('#contentCenter').show();
   
     //var result = "Received message: " + evt.data;
     var msg = JSON.parse(evt.data);
@@ -153,6 +155,10 @@ function logout() {
 		$('#username').val('');
 		$('#password').val('');
 	}
+	$('#contentLeft').hide();
+	$('#contentCenter').hide();
+	$('#searchText').val('');
+	$('#searchResults').empty();
 }
 
 function symbolSearch() {
