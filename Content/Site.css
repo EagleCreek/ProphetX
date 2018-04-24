@@ -42,7 +42,7 @@ body {
 .table{ margin: 0 !important;}
 
 .symbolData {
-    border: 1px solid #000;
+    border: 0px solid #000;
     float: right;
     width: 100px;
     margin-top: -24px;
