@@ -11,21 +11,11 @@ function onError(msg) {
 }
 
 function search(SearchTextValue) {
-    SearchTextValue = $("#searchText").val()
-    if (SearchTextValue[0].toLocaleLowerCase() != "@") {
-        if (SearchTextValue[0].toLocaleLowerCase() == "c") {
-            SearchTextValue = "@c`##";
-        }
-        if (SearchTextValue[0].toLocaleLowerCase() == "s") {
-            SearchTextValue = "@s`##";
-        }
-        if (SearchTextValue[0].toLocaleLowerCase() == "w") {
-            SearchTextValue = "@w`##";
-        }
-        if (SearchTextValue[0].toLocaleLowerCase() == "m") {
-            SearchTextValue = "@mw`##";
-        }
+    SearchTextValue = $("#searchText").val();
+    if (SearchTextValue[0] != "@") {
+        SearchTextValue = "@" + $("#searchText").val();
     }
+    SearchTextValue += "`##";
     searchDisplay(SearchTextValue);
 }
 
@@ -134,6 +124,13 @@ function addQuote(symbol, description) {
     //Get the label from description(Split function).
     var splitDescription = description.split(" ");
     var labelOrg = "";
+    //Removes # from cotton so it works in the search
+    for (var i = 0; i < splitDescription.length; i++) {
+        if (splitDescription[i].indexOf('#') != -1) {
+            splitDescription.splice(3);
+        }
+    }
+
     for (var i = 0; i < splitDescription.length - 2; i++) {
         labelOrg += splitDescription[i];
         labelOrg += " ";
@@ -145,9 +142,9 @@ function addQuote(symbol, description) {
     //Determine if label is already on page if not add it.
     var sectionLabel = $("#" + label);
     if (!sectionLabel.length) {
-        var section = '<section id="' + labelOrg + '">';
+        var section = '<section id="' + label + '">';
         section += '<h4>' + labelOrg + '</h4>';
-        section += '<div class="panel-group"  id="accordion' + labelOrg + '">';
+        section += '<div class="panel-group"  id="accordion' + label + '">';
         section += '</div>';
         section += '</section>';
         $("#quoteList").append(section);
@@ -408,32 +405,32 @@ function getSymbolData(symbol, label) {
             deleteSymbol();
         } else {
 
-            setValue("#change" + sym, eventDataData[0].Change);
-            setValue("#last" + sym, eventDataData[0].Last);
-            setValue("#high" + sym, eventDataData[0].High);
-            setValue("#volume" + sym, eventDataData[0].Volume);
-            setValue("#low" + sym, eventDataData[0].Low);
-            setValue("#openInt" + sym, eventDataData[0].OpenInterest);
-            setValue("#open" + sym, eventDataData[0].Open);
-            setValue("#vlty" + sym, parseFloat(eventDataData[0].Volatility).toFixed(4).toString());
-            setValue("#bid" + sym, eventDataData[0].Bid);
-            setValue("#bidSize" + sym, eventDataData[0].BidSize);
-            setValue("#ask" + sym, eventDataData[0].Ask);
-            setValue("#askSize" + sym, eventDataData[0].AskSize);
+        setValue("#change" + sym, eventDataData[0].Change);
+        setValue("#last" + sym, eventDataData[0].Last);
+        setValue("#high" + sym, eventDataData[0].High);
+        setValue("#volume" + sym, eventDataData[0].Volume);
+        setValue("#low" + sym, eventDataData[0].Low);
+        setValue("#openInt" + sym, eventDataData[0].OpenInterest);
+        setValue("#open" + sym, eventDataData[0].Open);
+        setValue("#vlty" + sym, parseFloat(eventDataData[0].Volatility).toFixed(4).toString());
+        setValue("#bid" + sym, eventDataData[0].Bid);
+        setValue("#bidSize" + sym, eventDataData[0].BidSize);
+        setValue("#ask" + sym, eventDataData[0].Ask);
+        setValue("#askSize" + sym, eventDataData[0].AskSize);
 
-            // Process the change values
+        // Process the change values
+        var change = (eventDataData[0].Change);
+        // Only do it if the value is defined.
+        if (typeof change != 'undefined') {
+            var check = change[0];
+            if (check == "-") {
+                var downUp = "Dn"
+                $('#change' + sym).addClass('changbox val' + downUp);
+            } else {
+                var downUp = "Up"
+                $('#change' + sym).addClass('changbox val' + downUp);
+            }
             var change = (eventDataData[0].Change);
-            // Only do it if the value is defined.
-            if (typeof change != 'undefined') {
-                var check = change[0];
-                if (check == "-") {
-                    var downUp = "Dn"
-                    $('#change' + sym).addClass('changbox val' + downUp);
-                } else {
-                    var downUp = "Up"
-                    $('#change' + sym).addClass('changbox val' + downUp);
-                }
-                }
             if (typeof change != 'undefined') {
                 var check = change[0];
                 if (check == "-") {
@@ -447,62 +444,62 @@ function getSymbolData(symbol, label) {
         }
     };
 
-// Set a field value
-function setValue(fieldId, value) {
-    // Only set if undefined
-    if (typeof value != 'undefined') {
-        // If the field is null then use 0, otherwise use the value
-        $(fieldId).html((value == null? 0 : value));
+    // Set a field value
+    function setValue(fieldId, value) {
+        // Only set if undefined
+        if (typeof value != 'undefined') {
+            // If the field is null then use 0, otherwise use the value
+            $(fieldId).html((value == null ? 0 : value));
+        }
     }
-}
 
-// Unwatch the specified symbol when watch is no longer needed.
-function unWatchSymbol(symbol) {
+    // Unwatch the specified symbol when watch is no longer needed.
+    function unWatchSymbol(symbol) {
 
-    // If the symbol is current watched then we should unwatch it
-    if (symbol.watch) {
-        var msg = {
-            meta: {
-                command: "Unwatch",
-                requestId: symbol.requestId
-            }
-        };
-        WEBSOCKET.send(JSON.stringify(msg));
+        // If the symbol is current watched then we should unwatch it
+        if (symbol.watch) {
+            var msg = {
+                meta: {
+                    command: "Unwatch",
+                    requestId: symbol.requestId
+                }
+            };
+            WEBSOCKET.send(JSON.stringify(msg));
+        }
     }
-}
 
-function deleteSymbol(symbol) {
-    // Delete the symbol
-    $("#" + symbol).remove();
-    // Get the saved information
-    var mySymbols = {};
-    var uName = $('#uName').text();
-    var localUserData = myStorage.getItem(uName);
-    if (localUserData !== null) {
-        myQuotes = JSON.parse(localUserData);
-        if (myQuotes != null) {
-            var symbolFound = false;
-            // Find the symbol that is being removed
-            for (var i = 0; !symbolFound & i < myQuotes.length; i++) {
-                // Use the symbol after the @ sign
-				var splitSymbol = myQuotes[i].symbol.split("@");
-                symbolFound = (splitSymbol[1] == symbol);
-                if (symbolFound) {
-                    // Unwatch the symbol
-                    unWatchSymbol(myQuotes[i]);
-                    // Remove the symbol from localData
-                    myQuotes.splice(i, 1);
-                    // Save the information in localDFate
-                    myStorage.setItem(uName, JSON.stringify(myQuotes));
+    function deleteSymbol(symbol) {
+        // Delete the symbol
+        $("#" + symbol).remove();
+        // Get the saved information
+        var mySymbols = {};
+        var uName = $('#uName').text();
+        var localUserData = myStorage.getItem(uName);
+        if (localUserData !== null) {
+            myQuotes = JSON.parse(localUserData);
+            if (myQuotes != null) {
+                var symbolFound = false;
+                // Find the symbol that is being removed
+                for (var i = 0; !symbolFound & i < myQuotes.length; i++) {
+                    // Use the symbol after the @ sign
+                    var splitSymbol = myQuotes[i].symbol.split("@");
+                    symbolFound = (splitSymbol[1] == symbol);
+                    if (symbolFound) {
+                        // Unwatch the symbol
+                        unWatchSymbol(myQuotes[i]);
+                        // Remove the symbol from localData
+                        myQuotes.splice(i, 1);
+                        // Save the information in localDFate
+                        myStorage.setItem(uName, JSON.stringify(myQuotes));
+                    }
                 }
             }
         }
+        checkSymbolLimit();
     }
-	checkSymbolLimit();
-}
 
-// Set the refresh rate for the given symbol
-function setRefreshRate(symbol) {
+    // Set the refresh rate for the given symbol
+    function setRefreshRate(symbol) {
 
     // Get the requestID for the sysmbol
     var requestId = getSymbolRequestId(symbol);
