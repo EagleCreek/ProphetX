@@ -88,27 +88,17 @@ function onError(msg) {
 }
 
 function search(SearchTextValue) {
-    SearchTextValue = $("#searchText").val()
-    if (SearchTextValue[0].toLocaleLowerCase() != "@") {
-        if (SearchTextValue[0].toLocaleLowerCase() == "c") {
-            SearchTextValue = "@c`##";
-        }
-        if (SearchTextValue[0].toLocaleLowerCase() == "s") {
-            SearchTextValue = "@s`##";
-        }
-        if (SearchTextValue[0].toLocaleLowerCase() == "w") {
-            SearchTextValue = "@w`##";
-        }
-        if (SearchTextValue[0].toLocaleLowerCase() == "m") {
-            SearchTextValue = "@mw`##";
-        }
+    SearchTextValue = $("#searchText").val();
+    if (SearchTextValue[0] != "@") {
+        SearchTextValue = "@" + $("#searchText").val();
     }
+    SearchTextValue += "`##";
     searchDisplay(SearchTextValue);
 }
 
 function searchDisplay(SearchTextValue) {
 
-    //WEBSOCKET.onopen = onOpen;
+    //WEBSOCKET = new WebSocket('wss://ProphetX14.dtn.com/cs/1.0');
     var CZ17Show = "~";
     var symbols = $('#searchText').val();
     var msg = {
@@ -223,9 +213,9 @@ function addQuote(symbol, description) {
     //Determine if label is already on page if not add it.
     var sectionLabel = $("#" + label);
     if (!sectionLabel.length) {
-        var section = '<section id="' + label + '">';
+        var section = '<section id="' + labelOrg + '">';
         section += '<h4>' + labelOrg + '</h4>';
-        section += '<div class="panel-group"  id="accordion' + label + '">';
+        section += '<div class="panel-group"  id="accordion' + labelOrg + '">';
         section += '</div>';
         section += '</section>';
         $("#quoteList").append(section);
@@ -445,29 +435,33 @@ function getSymbolData(symbol, label) {
         }
 		console.log(sym);
 		// eventDataDate[0].change ? 0 : 1;
+        if (sym == undefined) {
+            deleteSymbol();
+        } else {
 
-        setValue("#change" + sym, eventDataData[0].Change);
-        setValue("#last" + sym, eventDataData[0].Last);
-        setValue("#high" + sym, eventDataData[0].High);
-        setValue("#volume" + sym, eventDataData[0].Volume);
-        setValue("#low" + sym, eventDataData[0].Low);
-        setValue("#openInt" + sym, eventDataData[0].OpenInterest);
-        setValue("#open" + sym, eventDataData[0].Open);
-        setValue("#vlty" + sym, parseFloat(eventDataData[0].Volatility).toFixed(4).toString());
-        setValue("#bid" + sym, eventDataData[0].Bid);
-        setValue("#bidSize" + sym, eventDataData[0].BidSize);
-        setValue("#ask" + sym, eventDataData[0].Ask);
-        setValue("#askSize" + sym, eventDataData[0].AskSize);
+            setValue("#change" + sym, eventDataData[0].Change);
+            setValue("#last" + sym, eventDataData[0].Last);
+            setValue("#high" + sym, eventDataData[0].High);
+            setValue("#volume" + sym, eventDataData[0].Volume);
+            setValue("#low" + sym, eventDataData[0].Low);
+            setValue("#openInt" + sym, eventDataData[0].OpenInterest);
+            setValue("#open" + sym, eventDataData[0].Open);
+            setValue("#vlty" + sym, parseFloat(eventDataData[0].Volatility).toFixed(4).toString());
+            setValue("#bid" + sym, eventDataData[0].Bid);
+            setValue("#bidSize" + sym, eventDataData[0].BidSize);
+            setValue("#ask" + sym, eventDataData[0].Ask);
+            setValue("#askSize" + sym, eventDataData[0].AskSize);
 
-        var change = (eventDataData[0].Change);
-        if (typeof change != 'undefined') {
-            var check = change[0];
-            if (check == "-") {
-                var downUp = "Dn"
-                $('#change' + sym).addClass('changbox val' + downUp);
-            } else {
-                var downUp = "Up"
-                $('#change' + sym).addClass('changbox val' + downUp);
+            var change = (eventDataData[0].Change);
+            if (typeof change != 'undefined') {
+                var check = change[0];
+                if (check == "-") {
+                    var downUp = "Dn"
+                    $('#change' + sym).addClass('changbox val' + downUp);
+                } else {
+                    var downUp = "Up"
+                    $('#change' + sym).addClass('changbox val' + downUp);
+                }
             }
         }
     };
