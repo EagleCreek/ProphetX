@@ -11,21 +11,11 @@ function onError(msg) {
 }
 
 function search(SearchTextValue) {
-    SearchTextValue = $("#searchText").val()
-    if (SearchTextValue[0].toLocaleLowerCase() != "@") {
-        if (SearchTextValue[0].toLocaleLowerCase() == "c") {
-            SearchTextValue = "@c`##";
-        }
-        if (SearchTextValue[0].toLocaleLowerCase() == "s") {
-            SearchTextValue = "@s`##";
-        }
-        if (SearchTextValue[0].toLocaleLowerCase() == "w") {
-            SearchTextValue = "@w`##";
-        }
-        if (SearchTextValue[0].toLocaleLowerCase() == "m") {
-            SearchTextValue = "@mw`##";
-        }
+    SearchTextValue = $("#searchText").val();
+    if (SearchTextValue[0] != "@") {
+        SearchTextValue = "@" + $("#searchText").val();
     }
+    SearchTextValue += "`##";
     searchDisplay(SearchTextValue);
 }
 
