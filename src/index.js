@@ -46,9 +46,9 @@ function searchDisplay(SearchTextValue) {
         }
     };
     WEBSOCKET.send(JSON.stringify(msg));
-
-    var results = "";
-    WEBSOCKET.onmessage = function (event) {
+}
+//   var results = "";
+    function handleSymbolSearch(event) {
 
         // Clear the search results
         var searchResults = $("#searchResults");
@@ -93,7 +93,6 @@ function searchDisplay(SearchTextValue) {
         }
        checkSymbolLimit();
     };
-}
 
 
 // This function adds the selected symbol to the in memory list
@@ -183,7 +182,7 @@ function buildPanelGroup(symbol, label) {
     panelGroup += symbol + '[10]';
     panelGroup += '</a>';
     panelGroup += '</h4>';
-    panelGroup += '<div class="changeInterval"><input type="text" class="iVal" /><a href="#" class="small">OK</a></div> <div class="symbolData">';
+    panelGroup += '<div class="changeInterval"><input type="text" class="iVal" id="refresh' + symbol + '" /><a href="#" class="small" onclick="setRefreshRate(' + "'" + symbol + "'" + ')">OK</a></div> <div class="symbolData">';
     panelGroup += '<div class="symbolVal" id="last' + symbol + '"> </div>';
     // class="changbox val' + downUp + '"
     panelGroup += '<div id="change' + symbol + '"> </div>';
@@ -357,16 +356,17 @@ function getSymbolData(symbol, label) {
         // Send the request
         WEBSOCKET.send(JSON.stringify(msg));
     }
-
-    WEBSOCKET.onmessage = function (event) {
+};
+    function handleQuoteWatch(event) {
         // Get the data for the event
         var eventData = event.data;
-        // Get the data eleemnt in the response
-        var eventDataData = JSON.parse(eventData).data;
         // Get the meta element in the response
 		var eventDataMeta = JSON.parse(eventData).meta;
 		// Get the request ID from the meta data
 		var requestId = eventDataMeta.requestId;
+		console.log(eventDataMeta.command);
+        // Get the data eleemnt in the response
+        var eventDataData = JSON.parse(eventData).data;
 		// Get the list of symbols being processed from local storage
 		var uName = $('#uName').text();
         var localUserData = myStorage.getItem(uName);
@@ -418,7 +418,6 @@ function getSymbolData(symbol, label) {
             }
         }
     };
-};
 
 // Set a field value
 function setValue(fieldId, value) {
@@ -431,6 +430,7 @@ function setValue(fieldId, value) {
 
 // Unwatch the specified symbol when watch is no longer needed.
 function unWatchSymbol(symbol) {
+
     // If the symbol is current watched then we should unwatch it
     if (symbol.watch) {
         // Build the unwatch json
@@ -476,10 +476,11 @@ function deleteSymbol(symbol) {
 
 // Set the refresh rate for the given symbol
 function setRefreshRate(symbol) {
+
     // Get the requestID for the sysmbol
     var requestId = getSymbolRequestId(symbol);
     // Get the refresh interval
-    var refreshInterval = 1;
+    var refreshInterval = $("#refresh" + symbol ).val();
     // Create the ThrottleChange json
      var msg = {
         meta: {
