@@ -357,6 +357,7 @@ function getSymbolData(symbol, label) {
         WEBSOCKET.send(JSON.stringify(msg));
     }
 };
+
     function handleQuoteWatch(event) {
         // Get the data for the event
         var eventData = event.data;
@@ -364,7 +365,6 @@ function getSymbolData(symbol, label) {
 		var eventDataMeta = JSON.parse(eventData).meta;
 		// Get the request ID from the meta data
 		var requestId = eventDataMeta.requestId;
-		console.log(eventDataMeta.command);
         // Get the data eleemnt in the response
         var eventDataData = JSON.parse(eventData).data;
 		// Get the list of symbols being processed from local storage
@@ -403,7 +403,6 @@ function getSymbolData(symbol, label) {
             setValue("#ask" + sym, eventDataData[0].Ask);
             setValue("#askSize" + sym, eventDataData[0].AskSize);
         }
-		console.log(sym);
 		// eventDataDate[0].change ? 0 : 1;
         if (sym == undefined) {
             deleteSymbol();
@@ -434,7 +433,7 @@ function getSymbolData(symbol, label) {
                     var downUp = "Up"
                     $('#change' + sym).addClass('changbox val' + downUp);
                 }
-            var change = (eventDataData[0].Change);
+                }
             if (typeof change != 'undefined') {
                 var check = change[0];
                 if (check == "-") {
@@ -521,4 +520,4 @@ function setRefreshRate(symbol) {
     };
     // Send the Throttle Change
     WEBSOCKET.send(JSON.stringify(msg));
-}
+};

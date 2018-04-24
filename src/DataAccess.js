@@ -10,6 +10,7 @@ WEBSOCKET.onmessage = function(event) {
     var data = event.data;
     // Get the command that was setn
     var command = JSON.parse(data).meta.command;
+    console.log(command);
     if (command == 'Login') {
         loginSuccessful(event);
     }
