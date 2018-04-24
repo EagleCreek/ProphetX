@@ -120,3 +120,10 @@ input[type='checkbox']:checked.pseudo-checkbox + label:before { /*checked icon*/
     color: lawngreen;
 }
 
+.changeInterval {
+    margin-left: 124px;
+    margin-top: -24px;
+    float: left;
+}
+.changeInterval .iVal { width: 24px; color: #000 !important;}
+.changeInterval a{ color: #fff; padding-left: 4px;}
