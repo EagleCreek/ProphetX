@@ -125,6 +125,13 @@ function addQuote(symbol, description) {
     //Get the label from description(Split function).
     var splitDescription = description.split(" ");
     var labelOrg = "";
+    //Removes # from cotton so it works in the search
+    for (var i = 0; i < splitDescription.length; i++) {
+        if (splitDescription[i].indexOf('#') != -1) {
+            splitDescription.splice(3);
+        }
+    }
+
     for (var i = 0; i < splitDescription.length - 2; i++) {
         labelOrg += splitDescription[i];
         labelOrg += " ";
@@ -136,9 +143,9 @@ function addQuote(symbol, description) {
     //Determine if label is already on page if not add it.
     var sectionLabel = $("#" + label);
     if (!sectionLabel.length) {
-        var section = '<section id="' + labelOrg + '">';
+        var section = '<section id="' + label + '">';
         section += '<h4>' + labelOrg + '</h4>';
-        section += '<div class="panel-group"  id="accordion' + labelOrg + '">';
+        section += '<div class="panel-group"  id="accordion' + label + '">';
         section += '</div>';
         section += '</section>';
         $("#quoteList").append(section);
