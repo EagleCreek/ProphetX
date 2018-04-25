@@ -54,8 +54,8 @@ function login() {
     var msg = {
         meta: { command: 'Login' },
         data: {
-            username: uname,// 'test@eaglecrk.com',
-            password: pwd,// 'Dakota',
+            username: uname,
+            password: pwd,
             appname: 'WSP',
             version: '1.0.0.0',
         }
@@ -290,7 +290,6 @@ function setValue(fieldId, value) {
     } else {
 
         $('#searchError').html("");// empty msg if any.
-        //var eventDataData = data.data;
 
         $.each(data.data, function (index, eventDataData) {
             var tableRow = "<tr>";
@@ -299,7 +298,6 @@ function setValue(fieldId, value) {
 
             tableRow += '<td><button class="btn btn-sm btn-default addBtn" id="symbol1" value="Add" ';
             // TODO: we need to be consistent with our single and double quotes.
-            //tableRow += "<td><button class='btn btn-sm btn-default' id='symbol1' value='Add' ";
 
             tableRow += 'onclick = "addQuote(';
             tableRow += "'" + eventDataData.symbol + "','" + eventDataData.description + "'";
