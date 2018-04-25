@@ -8,7 +8,7 @@ WEBSOCKET.onerror = function(evt) {
 WEBSOCKET.onmessage = function(event) {
     // Get the event data
     var data = event.data;
-    // Get the command that was setn
+    // Get the command that was sent
     var command = JSON.parse(data).meta.command;
     console.log(command);
     if (command == 'Login') {
@@ -24,7 +24,7 @@ WEBSOCKET.onmessage = function(event) {
 }
 var myQuotes = [];
 var myStorage = window.localStorage;
-//myStorage.removeItem("wharrison@eaglecrk.com");
+//Uncomment to clear out localStorage
 //myStorage.clear();
 
 window.addEventListener("load", getLocalData, false);
@@ -60,7 +60,6 @@ function login() {
     };
     WEBSOCKET.send(JSON.stringify(msg));// submit json
    $('#loginError').html(""); // Clear out value
-//   WEBSOCKET.onmessage = loginSuccessful;
 }
 
 
@@ -69,7 +68,6 @@ function loginSuccessful(evt) {
 	$('#contentLeft').show();
 	$('#contentCenter').show();
 
-    //var result = "Received message: " + evt.data;
     var msg = JSON.parse(evt.data);
 
     var cmd = msg.meta.command;
@@ -91,7 +89,6 @@ function loginSuccessful(evt) {
                         WEBSOCKET.close(1000, "Reconnect");
                         WEBSOCKET = null;
                     }
-//                    WEBSOCKET = new WebSocket('wss://ProphetX14.dtn.com/cs/1.0');
                      createWebSocket();
                 } else {
                      loginLookup(msg);// get myQuoteList from localStorage
@@ -151,16 +148,6 @@ function loginLookup(msg) {
             quoteWatch();
         }
     }
-   /* else {
-        var userData = [{symbol: '', description: '', requestId: 0, watch: false}];
-        myStorage.setItem(uName, JSON.stringify(userData));
-        myQuotes = JSON.parse(myStorage.getItem(uName));
-    }*/
-
-    //chartSnap();
-    //symbolSearch();
-    //chartWatch();
-
 }
 
 function logout() {
@@ -171,7 +158,7 @@ function logout() {
         WEBSOCKET = null;
     }
     createWebSocket();
-//    WEBSOCKET = new WebSocket('wss://ProphetX14.dtn.com/cs/1.0');
+
     $("#quoteList").empty();
 	if (!$('#remember').is(':checked')) {
 		$('#username').val('');
@@ -182,234 +169,10 @@ function logout() {
 	$('#searchText').val('');
 	$('#searchResults').empty();
 }
-//
-//function symbolSearch() {
-//    var request = {
-//        meta: {
-//            command: "SymbolSearch",
-//            requestId: 17
-//        },
-//        data: {
-//            sympat: "@C`##", // replace with value from form
-//            limit: 15
-//        }
-//    }
-//
-//    WEBSOCKET.send(JSON.stringify(request));
-//
-//    WEBSOCKET.onmessage = function (result) {
-//
-//        var data = JSON.parse(result.data);
-//
-//        var vals = data.data;
-//        var symValues = "";
-//        $.each(vals, function (index, i) {
-//            var accordionHtml = "" + i;
-//            //symValues += "<tr><td></td><td>" + i.value + "</td><td>&nbsp;</td><td>Volume</td><td>" + i.othervalue + "</td></tr>";
-//        });
-//
-//        //var status = data.meta.status;
-//        //var symbols = data.meta.symbols;
-//        //var exp = data.meta.expression;
-//        //var desc = data.meta.expressionDesc;
-//
-//        //var itemId = exp;
-//        //var accordion = "accordion" + exp;
-//        //var valuTable = "table" + exp;
-//
-//        //var vals = data.data;
-//        //var symValues = "";
-//        //$.each(vals, function (index, i) {
-//        //    var accordionHtml = "";
-//
-//        //    symValues += "<tr><td>High</td><td>" + i.High + "</td><td>&nbsp;</td><td>Volume</td><td>" + i.Volume + "</td></tr>";
-//        //    symValues += "<tr><td>Low</td><td>" + i.Low + "</td><td>&nbsp;</td><td>OpenInit</td><td>" + i.OpenInit + "</td></tr>";
-//        //    symValues += "<tr><td>Open</td><td>" + i.Open + "</td><td>&nbsp;</td><td>Close</td><td>" + i.Close + "</td></tr>";
-//        //});
-//    };
-//
-//
-//
-//
-//}
 
 function quoteWatch() {
 
 	for (var i = 0; i < myQuotes.length; i++) {
 		addQuote(myQuotes[i].symbol, myQuotes[i].description);
 	}
-
-    /*var request = {
-        meta: {
-            command: "QuoteWatch",
-            requestId: 6
-        },
-        data: {
-            expression: "PLACEHOLDER_SYMBOL",
-            fields: [
-                "Last",
-                "CumVolume"
-            ],
-            priceFormat: "text",
-            timeFormat: "text",
-            symbolFormat: "text",
-            updateInterval: 0.5
-        }
-    };
-
-    for (var i = 0; i < myQuotes.symbols.length; i++) {
-        var item = myQuotes.symbols[i];
-		request.meta.requestId = item.requestId;
-		request.data.expression = item.symbol;
-		//console.log('Sent request ' + request.meta.requestId + ': ' + JSON.stringify(request));
-        if (item.symbol != "") {
-            WEBSOCKET.send(JSON.stringify(request));
-            WEBSOCKET.onmessage = function (event) {
-                parseQuotes(event);
-            };
-        }
-	}*/
-
-
-
 }
-
-    /*function parseQuotes(result) {
-
-        // loop through results and display
-		var data = JSON.parse(result.data);
-
-        var vals = data.data;
-        var symValues = "";
-		var requestId = 'requestId' + data.meta.requestId;
-        $.each(vals, function (index, i) {
-            var accordionHtml = "" + i;
-			//console.log('last = ' + i.Last);
-			//console.log('CumVolume = ' + i.CumVolume);
-            symValues += "<div id='" + requestId + "'><tr><td>Last: </td><td>" + i.Last + "</td><td>&nbsp;</td><td>Volume: </td><td>" + i.CumVolume + "</td></tr></div>";
-			//$('#messages').append(symValues);
-			if($('#' + requestId).length == 0) {
-				$('#messages').append(symValues);
-
-			}
-			else {
-				$('#' + requestId).html(symValues);
-			}
-			console.log(symValues);
-        });
-
-    };*/
-
-//function quoteSnap() {
-//    var request = {
-//        meta: {
-//            command: "QuoteSnap",
-//            requestId: 1
-//        },
-//        data: {
-//            expression: "TWTR",
-//            fields: [
-//                "Last",
-//                "CumVolume",
-//                "LastTicknum"
-//            ],
-//            priceFormat: "text",
-//            timeFormat: "text",
-//            symbolFormat: "text"
-//        }
-//    }
-//    WEBSOCKET.send(JSON.stringify(request));
-//
-//    WEBSOCKET.onmessage = function (result) {
-//        // loop through results and display
-//
-//    };
-//}
-//
-//
-//function chartWatch() {
-//    var request = {
-//        meta: {
-//            command: "ChartWatch",
-//            requestId: 20
-//        },
-//        data: {
-//            expression: "GOOG",
-//                limit: 100,
-//                interval: "MINUTE",
-//                intervalCount: 10
-//        }
-//    }
-//
-//
-//    WEBSOCKET.send(JSON.stringify(request));
-//
-//    WEBSOCKET.onmessage = function (result) {
-//        var data = JSON.parse(result.data);
-//        var status = data.meta.status;
-//        var symbols = data.meta.symbols;
-//        var exp = data.meta.expression;
-//        var desc = data.meta.expressionDesc;
-//
-//        var itemId = exp;
-//        var accordion = "accordion" + exp;
-//        var valuTable = "table" + exp;
-//
-//        var vals = data.data;
-//        var symValues = "";
-//        $.each(vals, function (index, i) {
-//            var accordionHtml = "";
-//
-//            //symValues += "<tr><td>High</td><td>" + i.High + "</td><td>&nbsp;</td><td>Volume</td><td>" + i.Volume + "</td></tr>";
-//            //symValues += "<tr><td>Low</td><td>" + i.Low + "</td><td>&nbsp;</td><td>OpenInit</td><td>" + i.OpenInit + "</td></tr>";
-//            //symValues += "<tr><td>Open</td><td>" + i.Open + "</td><td>&nbsp;</td><td>Close</td><td>" + i.Close + "</td></tr>";
-//        });
-//
-//    };
-//
-//}
-//
-//
-//function chartSnap() {
-//
-//    var request = {
-//        meta: {
-//            command: "ChartSnap",
-//            requestId: 10
-//        },
-//        data: {
-//            expression: "@ES@1",
-//            limit: 100,
-//            interval: "MINUTE",
-//            intervalCount: 5
-//        }
-//    };
-//    WEBSOCKET.send(JSON.stringify(request));
-//
-//    WEBSOCKET.onmessage = function (result) {
-//
-
-//    };
-    //var data = JSON.parse(evt.data);
-    //var status = data.meta.status;
-    //var symbols = data.meta.symbols;
-    //var exp = data.meta.expression;
-    //var desc = data.meta.expressionDesc;
-
-    //var itemId = exp;
-    //var accordion = "accordion" + exp;
-    //var valuTable = "table" + exp;
-
-    //var vals = data.data;
-    //var symValues = "";
-    //$.each(vals, function (index, i) {
-    //    var accordionHtml = "";
-
-    //    symValues += "<tr><td>High</td><td>" + i.High + "</td><td>&nbsp;</td><td>Volume</td><td>" + i.Volume + "</td></tr>";
-    //    symValues += "<tr><td>Low</td><td>" + i.Low + "</td><td>&nbsp;</td><td>OpenInit</td><td>" + i.OpenInit + "</td></tr>";
-    //    symValues += "<tr><td>Open</td><td>" + i.Open + "</td><td>&nbsp;</td><td>Close</td><td>" + i.Close + "</td></tr>";
-    //});
-//}
-
-
-

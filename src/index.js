@@ -176,7 +176,6 @@ function buildPanelGroup(symbol, label) {
     panelGroup += '</h4>';
     panelGroup += '<div class="changeInterval"><input type="text" class="iVal" value="1" id="refresh' + symbol + '" /><a href="#" class="small" onclick="setRefreshRate(' + "'" + symbol + "'" + ')" data-toggle="tooltip" data-placement="top" title="Update Interval">OK</a></div> <div class="symbolData">';
     panelGroup += '<div class="symbolVal" id="last' + symbol + '"> </div>';
-    // class="changbox val' + downUp + '"
     panelGroup += '<div id="change' + symbol + '"> </div>';
     panelGroup += '<div><a href="#?id=' + symbol + '" class="linkDelete" onclick="deleteSymbol(' + "'" + symbol + "'" + ')" data-toggle="tooltip" data-placement="top" title="Remove Symbol">[X]</a></div>';
     panelGroup += '</div>';
@@ -395,7 +394,7 @@ function getSymbolData(symbol, label) {
             setValue("#ask" + sym, eventDataData[0].Ask);
             setValue("#askSize" + sym, eventDataData[0].AskSize);
         }
-		// eventDataDate[0].change ? 0 : 1;
+        //If sym is undefined then remove it
         if (sym == undefined) {
             deleteSymbol();
         } else {
