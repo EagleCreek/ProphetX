@@ -1,10 +1,20 @@
-﻿// Create the inital WebSocket
+﻿/////////////////////////////////////////////////////
+// Created: 4/2018
+// By: EagleCrk for a POC 
+// Description: This file is JavaScript code for the data access and/or WebSocket methods
+// - This could be the data access layer or interface 
+
+// NOTE: Global variables are in index.js  
+// TODO: create seperate data and authentication layers. 
+
+// Create the inital WebSocket
 createWebSocket();
 
 // Create a common websocket
 function createWebSocket() {
     WEBSOCKET = new WebSocket('wss://ProphetX14.dtn.com/cs/1.0');
-    WEBSOCKET.onerror = function(evt) {
+    WEBSOCKET.onerror = function (evt) {
+        // TODO: leverage evt values for custom messages. 
         window.location.replace("error.htm");
     }
     WEBSOCKET.onmessage = function(event) {
@@ -13,13 +23,13 @@ function createWebSocket() {
         // Get the command that was sent
         var command = JSON.parse(data).meta.command;
         console.log(command);
-        if (command == 'Login') {
+        if (command === 'Login') {
             loginSuccessful(event);
         }
-        if (command == 'SymbolSearch') {
+        if (command === 'SymbolSearch') {
             handleSymbolSearch(event);
         }
-        if (command == 'QuoteWatch') {
+        if (command === 'QuoteWatch') {
             handleQuoteWatch(event);
         }
     }
@@ -27,8 +37,9 @@ function createWebSocket() {
 var myQuotes = [];
 var myStorage = window.localStorage;
 //Uncomment to clear out localStorage
-//myStorage.clear();
+//myStorage.clear(); // TODO: create ui method to leverage this code
 
+// This sets up data onLoad
 window.addEventListener("load", getLocalData, false);
 
 function getLocalData()
@@ -190,7 +201,7 @@ function handleQuoteWatch(event) {
     // Process symbols that are in local storage until the correct one is foudn
     for (var i = 0; !symbolFound & i < myQuotes.length; i++) {
         // Symbol is found if it matches the requestId
-        symbolFound = myQuotes[i].requestId == requestId;
+        symbolFound = myQuotes[i].requestId === requestId;
         if(symbolFound) {
             // Update the saved symbol setting watch to true
             myQuotes[i].watch = true;
@@ -234,30 +245,33 @@ function handleQuoteWatch(event) {
     setValue("#ask" + sym, eventDataData[0].Ask);
     setValue("#askSize" + sym, eventDataData[0].AskSize);
 
-    // Process the change values
-    var change = (eventDataData[0].Change);
-    // Only do it if the value is defined.
-    if (typeof change != 'undefined') {
-        var check = change[0];
-        if (check == "-") {
-            var downUp = "Dn"
-            $('#change' + sym).addClass('changbox val' + downUp);
-        } else {
-            var downUp = "Up"
-            $('#change' + sym).addClass('changbox val' + downUp);
-        }
+        // Process the change values
         var change = (eventDataData[0].Change);
-        if (typeof change != 'undefined') {
+       
+        // Only do it if the value is defined.
+        if (typeof change !== 'undefined') {
+
             var check = change[0];
-            if (check == "-") {
-                var downUp = "Dn"
+            var downUp = "";
+
+            if (check === "-") {
+                downUp = "Dn";
                 $('#change' + sym).addClass('changbox val' + downUp);
             } else {
-                var downUp = "Up"
+                downUp = "Up";
                 $('#change' + sym).addClass('changbox val' + downUp);
             }
-        }
-    }
+       
+            if (typeof change != 'undefined') {
+                if (check === "-") {
+                    downUp = "Dn";
+                    $('#change' + sym).addClass('changbox val' + downUp);
+                } else {
+                    downUp = "Up";
+                    $('#change' + sym).addClass('changbox val' + downUp);
+                }
+            }
+        } 
     }
 };
 
@@ -291,13 +305,13 @@ function setValue(fieldId, value) {
 
         $('#searchError').html("");// empty msg if any.
 
+        // TODO: we need to be consistent with our single and double quotes.
         $.each(data.data, function (index, eventDataData) {
             var tableRow = "<tr>";
             tableRow += "<td>" + eventDataData.symbol + "</td>";
             tableRow += "<td>" + eventDataData.description + "</td>";
 
             tableRow += '<td><button class="btn btn-sm btn-default addBtn" id="symbol1" value="Add" ';
-            // TODO: we need to be consistent with our single and double quotes.
 
             tableRow += 'onclick = "addQuote(';
             tableRow += "'" + eventDataData.symbol + "','" + eventDataData.description + "'";

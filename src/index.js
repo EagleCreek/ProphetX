@@ -1,9 +1,15 @@
-﻿
-// GLOBAL Variables. 
+﻿/////////////////////////////////////////////////////
+// Created: 4/2018
+// By: EagleCrk for a POC 
+// Description: This file is JavaScript code for the index.html view. 
+// - This could be the 'controller' for the index view.
+
+
+// Variables. 
 var requestID = 1;
 var sourceDND;
 var symbolLimit = 100;
-
+var WEBSOCKET;
 
 
 // Generic Error Handler 
@@ -27,17 +33,14 @@ function searchDisplay(searchTextValue) {
             requestId: requestID++
         },
         data: {
-            //A search for all corn ("@c`##")
+            //A search for all corn ("@c`##") 
+            // TODO: currently attempting to leverage commodity futures only, create methods for advanced search
             sympat: searchTextValue,
             limit: 100
         }
     };
     WEBSOCKET.send(JSON.stringify(msg));
 }
-
-
-
-
 
 // This function adds the selected symbol to the in memory list
 // NOTE: myQuotes is a Global Variable
@@ -52,7 +55,7 @@ function addQuote(symbol, description) {
         myQuotes = JSON.parse(localUserData);
         if (myQuotes != null) {
             var symbolSaved = false;
-            //mySymbols = myQuotes.symbols;
+            //mySymbols = myQuotes.symbols; // debug
             for (var i = 0; !symbolSaved & i < myQuotes.length; i++) {
                 symbolSaved = myQuotes[i].symbol === fullSymbol;
 				if(symbolSaved) {
@@ -76,13 +79,14 @@ function addQuote(symbol, description) {
     //Get the label from description(Split function).
     var splitDescription = description.split(" ");
     var labelOrg = "";
-    //Removes # from cotton so it works in the search
+    var label = "";
+    //Removes # from cotton so it works in the search // TODO: use api to add more advanced search functions
     for (var ii = 0; ii < splitDescription.length; ii++) {
         if (splitDescription[ii].indexOf("#") !== -1) {
             splitDescription.splice(3);
         }
     }
-
+    // Note: code updated to avoid reuse of same variable name in same method
     for (var i1 = 0; i1 < splitDescription.length - 2; i1++) {
         labelOrg += splitDescription[i1];
         labelOrg += " ";
@@ -103,7 +107,6 @@ function addQuote(symbol, description) {
     };
 
     //Panel group
-
     var symbolData = $("#" + symbol);
     if (!symbolData.length) {
         buildPanelGroup(symbol, label);
@@ -212,19 +215,20 @@ function dragSymbol(event) {
 // Determine if drop should be allowed
 function allowDropSymbol(event) {
     // Don't allow drop on the source
-    if (event.currentTarget.id != sourceDND) {
+    if (event.currentTarget.id !== sourceDND) {
         // Get a reference to the parent of the drop target
         var dropParent = $("#" + event.currentTarget.id).parent()[0].id;
         // Get a reference to the parent of the drag object
         var sourceParent = $("#" + sourceDND).parent()[0].id;
         // Compare the parents
-       if (sourceParent == dropParent) {
+       if (sourceParent === dropParent) {
              // If the same then allow the drop
              event.preventDefault();
         }
     }
 }
 
+// TODO: refactor
 // Get the saved request ID for a give symbol
 function getSymbolRequestId(symbol) {
     // Default to null

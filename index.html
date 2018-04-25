@@ -3,26 +3,26 @@
 <head>
     <title>ProphetX</title>
     <meta charset="utf-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <!--// these lines get code from a CDN reducing the need to store files locally //-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-    <link href="/content/themes/base/all.css" rel="stylesheet" />
-    <link href="/content/site.css" rel="stylesheet" />
-    
-    <script src="/src/index.js"></script>
-    <script src="/src/dataaccess.js"></script>
+    <link href="content/themes/base/all.css" rel="stylesheet" />
+    <link href="content/site.css" rel="stylesheet" />
 
+    <script src="src/index.js"></script>
+    <script src="src/dataaccess.js"></script>
+
+    <!--// the below scripts could be uncommented to leverage React //-->
     <!--<script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>-->
     <!--<script src="https://unpkg.com/react@16/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>-->
-    
+
 </head>
 <body>
     <nav class="navbar navbar-inverse">
@@ -40,6 +40,7 @@
                     <li class="active"><a href="#">Home</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
+                    <!--// use React to control sections like this for authentication //-->
                     <!--<li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
                     <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Log off? </a></li>-->
                 </ul>
@@ -48,7 +49,7 @@
     </nav>
 
     <div class="container-fluid">
-        <!-- currently blank but could be leveraged for header details-->
+        <!-- currently blank but could be leveraged for header details, currently empty -->
         <div id="rowHeader" class="row">
             <div class="col-md-8">
                 <div id="header"></div>
@@ -75,9 +76,9 @@
                     <h4>Symbol Search</h4>
 
                     <input type="text" class="form-control" id="searchText"
-                           style="width: 240px; float: left;" placeholder="Search Symbol"/>
+                           style="width: 240px; float: left;" placeholder="Search Symbol" />
 
-                    <input type="button" class="btn btn-default" value="Search" onclick="search();"/>
+                    <input type="button" class="btn btn-default" value="Search" onclick="search();" />
 
                     <table class="table table-condensed" id="searchResults">
                         <!-- JavaScript adds rows here -->
@@ -89,74 +90,67 @@
 
             <div class="col-md-4">
                 <section id="contentRight">
-
-                <div id="loginInfo">
-                    <p>
-                        Enter your username and password to see market data updates for common symbols.
-                    </p>
-                    <form>
-                        <section>
-                            <label>Username</label>
-                            <div class="panel-group">
-                            <div class="form-group">
-                                <input id="username" class="form-control" type="text" maxlength="50" placeholder="50 characters max"/>
+                    <div id="loginInfo">
+                        <p>
+                            Enter your username and password to see market data updates for common symbols.
+                        </p>
+                        <form>
+                            <section>
+                                <label>Username</label>
+                                <div class="panel-group">
+                                    <div class="form-group">
+                                        <input id="username" class="form-control" type="text" maxlength="50" placeholder="50 characters max" />
+                                    </div>
                                 </div>
-                            </div>
-                            <label>Password</label>
-                            <div class="panel-group">
-                            <div class="form-group">
-                                <input id="password" class="form-control" type="password" maxlength="50" placeholder="50 characters max"/>
+                                <label>Password</label>
+                                <div class="panel-group">
+                                    <div class="form-group">
+                                        <input id="password" class="form-control" type="password" maxlength="50" placeholder="50 characters max" />
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="checkbox">
-                                <input type='checkbox' id='remember' class='pseudo-checkbox sr-only'/>
-                                <label for='remember'> Remember Me!</label>
-                                <!--<label><input id="remember" type="checkbox" > Remember Password</label>-->
-                            </div>
-                        </section>
-                        <input id="loginButton" class="btn btn-default" value="Login" type="button" onclick="login()">
-                        <br />
-                        <label></label>
-                        <div id="loginError"></div>
-                    </form>
-                </div>
+                                <div class="checkbox">
+                                    <input type='checkbox' id='remember' class='pseudo-checkbox sr-only' />
+                                    <label for='remember'> Remember Me!</label>
+                                    <!--<label><input id="remember" type="checkbox" > Remember Password</label>-->
+                                </div>
+                            </section>
+                            <input id="loginButton" class="btn btn-default" value="Login" type="button" onclick="login()">
+                            <br />
+                            <label></label>
+                            <div id="loginError"></div>
+                        </form>
+                    </div>
 
-                <div id="loggedIn" style="display: none;">
-                    <div id="msgWelcome"></div>
-                    <div id="uName" style="display: none;"></div>
-                    <input type="button" class="btn btn-primary btn-sm" value="Logout" onclick="logout();"/>
-                    <p class="small"><div id="version"></div></p>
+                    <div id="loggedIn" style="display: none;">
+                        <div id="msgWelcome"></div>
+                        <div id="uName" style="display: none;"></div>
+                        <input type="button" class="btn btn-primary btn-sm" value="Logout" onclick="logout();" />
+                        <p class="small"><div id="version"></div></p>
 
-                </div>
+                    </div>
 
-                <div id="messages"></div>
+                    <div id="messages"></div>
                 </section>
             </div>
 
         </div>
 
-
-
     </div>
 
-
-    <script type="text/javascript">
-        // DOM Only and ready to add scripts.
-        $(document).ready(function () {
-            //console.log("document loaded");
-            $('[data-toggle="tooltip"]').tooltip(); 
-        });
-
-
-        // The whole window of everything.
-        $(window).on("load", function () {
-            //console.log("window loaded");
-        });
-    </script>
-
-
-
-
+<script type="text/javascript">
+    
+    // DOM Only and ready to add scripts.
+    // TODO: these functions could be moved to controller
+    $(document).ready(function () {
+        //console.log("document loaded");
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+        
+    // The whole window of everything.
+    $(window).on("load", function () {
+        //console.log("window loaded");
+    });
+</script>
 
 </body>
 </html>

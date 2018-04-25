@@ -1,4 +1,8 @@
-﻿
+﻿/*
+    Created for : DTN - ProphetX 
+    By: EagleCrk Software Services - 04/2018
+    Description: proof of concept only not menat to be used as production release. 
+*/
 
 body {
     font-family: "Century Gothic", Futura, sans-serif;
@@ -42,7 +46,7 @@ body {
 .table{ margin: 0 !important;}
 
 .symbolData {
-    border: 0px solid #000;
+    border: 0px solid #000;/*adjust this if you need to see how it fits*/
     float: right;
     width: 100px;
     margin-top: -24px;
@@ -59,7 +63,7 @@ body {
     float: right;
     text-align: center;
     horiz-align: center;
-    /*background-color: blueviolet;*/
+    /*background-color: blueviolet;*/ /*adjust this if you need to see how it fits*/
     width: 40px;
     height: 22px;
     font-size: 1em !important;
@@ -91,8 +95,6 @@ body {
     /* symbol for "collapsed" panels */
     content: "\e080"; /* adjust as needed, taken from bootstrap.css */
 }
-
-
 
 
     /* checkbox icons */
