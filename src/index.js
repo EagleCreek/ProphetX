@@ -89,6 +89,7 @@ function addQuote(symbol, description) {
     };
     labelOrg = labelOrg.trim();
     label = labelOrg.replace(/ /g, "_");
+	label = label.replace(/\//g, "_");
 
     //Determine if label is already on page if not add it.
     var sectionLabel = $("#" + label);
